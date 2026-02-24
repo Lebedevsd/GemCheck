@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "GemCheck – PoE Transfigured Gem Calculator",
+  "description": "Shows the most profitable transfigured gems to hunt via the Labyrinth Divine Font, with color-roll EV and per-gem probabilities.",
+  "version": "1.0.0",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png"
+    },
+    "default_title": "GemCheck"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://poe.ninja/*/economy/*/skill-gems*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
