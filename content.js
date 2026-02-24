@@ -7,80 +7,154 @@
   // ─── Gem color lookup (base gem name → 'r' | 'g' | 'b') ──────────────────
   // Source: poewiki.net/wiki/List_of_skill_gems (via gem_colors.json)
   const GEM_COLORS = {
-    // ── RED (Strength) ────────────────────────────────────────────────────────
-    'Absolution': 'r', 'Ancestral Cry': 'r', 'Anger': 'r', 'Animate Guardian': 'r',
-    'Autoexertion': 'r', 'Berserk': 'r', 'Bladestorm': 'r', 'Blood and Sand': 'r',
-    'Boneshatter': 'r', 'Chain Hook': 'r', 'Cleave': 'r', 'Consecrated Path': 'r',
-    'Corrupting Fever': 'r', 'Crushing Fist': 'r', 'Decoy Totem': 'r', 'Defiance Banner': 'r',
-    'Determination': 'r', 'Devouring Totem': 'r', 'Dominating Blow': 'r', 'Dread Banner': 'r',
-    'Earthquake': 'r', 'Earthshatter': 'r', 'Enduring Cry': 'r', 'Eviscerate': 'r',
-    'Exsanguinate': 'r', 'Flame Link': 'r', 'Flesh and Stone': 'r', 'Frozen Legion': 'r',
-    'Glacial Hammer': 'r', 'Ground Slam': 'r', 'Heavy Strike': 'r', 'Herald of Ash': 'r',
-    'Herald of Purity': 'r', 'Holy Flame Totem': 'r', 'Ice Crash': 'r', 'Immortal Call': 'r',
-    'Infernal Blow': 'r', 'Infernal Cry': 'r', 'Intimidating Cry': 'r', 'Leap Slam': 'r',
-    'Molten Shell': 'r', 'Molten Strike': 'r', 'Perforate': 'r', 'Petrified Blood': 'r',
-    'Pride': 'r', 'Protective Link': 'r', 'Punishment': 'r', 'Purity of Fire': 'r',
-    'Rage Vortex': 'r', 'Rallying Cry': 'r', 'Reap': 'r', 'Rejuvenation Totem': 'r',
-    'Searing Bond': 'r', 'Seismic Cry': 'r', 'Shield Charge': 'r', 'Shield Crush': 'r',
-    'Shockwave Totem': 'r', 'Smite': 'r', 'Static Strike': 'r', 'Steelskin': 'r',
-    'Summon Flame Golem': 'r', 'Summon Stone Golem': 'r', 'Sunder': 'r', 'Sweep': 'r',
-    'Swordstorm': 'r', 'Tectonic Slam': 'r', 'Vengeful Cry': 'r', 'Vigilant Strike': 'r',
-    'Vitality': 'r', 'Volcanic Fissure': 'r', 'Vulnerability': 'r', 'War Banner': 'r',
+    // ── RED (Strength) ─────────────────────────────────────────
+    'Absolution': 'r',     'Ancestral Cry': 'r',     'Anger': 'r',     'Animate Guardian': 'r',
+    'Autoexertion': 'r',     'Berserk': 'r',     'Bladestorm': 'r',     'Blood and Sand': 'r',
+    'Boneshatter': 'r',     'Chain Hook': 'r',     'Cleave': 'r',     'Consecrated Path': 'r',
+    'Corrupting Fever': 'r',     'Crushing Fist': 'r',     'Decoy Totem': 'r',     'Defiance Banner': 'r',
+    'Determination': 'r',     'Devouring Totem': 'r',     'Dominating Blow': 'r',     'Dread Banner': 'r',
+    'Earthquake': 'r',     'Earthshatter': 'r',     'Enduring Cry': 'r',     'Eviscerate': 'r',
+    'Exsanguinate': 'r',     'Flame Link': 'r',     'Flesh and Stone': 'r',     'Frozen Legion': 'r',
+    'Glacial Hammer': 'r',     'Ground Slam': 'r',     'Heavy Strike': 'r',     'Herald of Ash': 'r',
+    'Herald of Purity': 'r',     'Holy Flame Totem': 'r',     'Ice Crash': 'r',     'Immortal Call': 'r',
+    'Infernal Blow': 'r',     'Infernal Cry': 'r',     'Intimidating Cry': 'r',     'Leap Slam': 'r',
+    'Molten Shell': 'r',     'Molten Strike': 'r',     'Perforate': 'r',     'Petrified Blood': 'r',
+    'Pride': 'r',     'Protective Link': 'r',     'Punishment': 'r',     'Purity of Fire': 'r',
+    'Rage Vortex': 'r',     'Rallying Cry': 'r',     'Reap': 'r',     'Rejuvenation Totem': 'r',
+    'Searing Bond': 'r',     'Seismic Cry': 'r',     'Shield Charge': 'r',     'Shield Crush': 'r',
+    'Shockwave Totem': 'r',     'Smite': 'r',     'Static Strike': 'r',     'Steelskin': 'r',
+    'Summon Flame Golem': 'r',     'Summon Stone Golem': 'r',     'Sunder': 'r',     'Sweep': 'r',
+    'Swordstorm': 'r',     'Tectonic Slam': 'r',     'Vengeful Cry': 'r',     'Vigilant Strike': 'r',
+    'Vitality': 'r',     'Volcanic Fissure': 'r',     'Vulnerability': 'r',     'War Banner': 'r',
 
-    // ── GREEN (Dexterity) ─────────────────────────────────────────────────────
-    'Ambush': 'g', 'Animate Weapon': 'g', 'Arctic Armour': 'g', 'Artillery Ballista': 'g',
-    'Barrage': 'g', 'Bear Trap': 'g', 'Blade Blast': 'g', 'Blade Flurry': 'g',
-    'Blade Trap': 'g', 'Blade Vortex': 'g', 'Bladefall': 'g', 'Blast Rain': 'g',
-    'Blink Arrow': 'g', 'Blood Rage': 'g', 'Burning Arrow': 'g', 'Caustic Arrow': 'g',
-    'Charged Dash': 'g', 'Cobra Lash': 'g', 'Conflagration': 'g', 'Cremation': 'g',
-    'Cyclone': 'g', 'Dash': 'g', 'Desecrate': 'g', 'Detonate Dead': 'g',
-    'Double Strike': 'g', 'Dual Strike': 'g', 'Elemental Hit': 'g', 'Ensnaring Arrow': 'g',
-    'Ethereal Knives': 'g', 'Explosive Arrow': 'g', 'Explosive Concoction': 'g', 'Explosive Trap': 'g',
-    'Fire Trap': 'g', 'Flamethrower Trap': 'g', 'Flicker Strike': 'g', 'Frenzy': 'g',
-    'Frost Blades': 'g', 'Galvanic Arrow': 'g', 'Glacial Shield Swipe': 'g', 'Grace': 'g',
-    'Haste': 'g', 'Hatred': 'g', 'Herald of Agony': 'g', 'Herald of Ice': 'g',
-    'Ice Shot': 'g', 'Ice Trap': 'g', 'Intuitive Link': 'g', 'Lacerate': 'g',
-    'Lancing Steel': 'g', 'Lightning Arrow': 'g', 'Lightning Strike': 'g', 'Mirror Arrow': 'g',
-    'Pestilent Strike': 'g', 'Phase Run': 'g', 'Plague Bearer': 'g', 'Poisonous Concoction': 'g',
-    'Precision': 'g', 'Puncture': 'g', 'Purity of Ice': 'g', 'Rain of Arrows': 'g',
-    'Reave': 'g', 'Scourge Arrow': 'g', 'Seismic Trap': 'g', 'Shattering Steel': 'g',
-    'Shrapnel Ballista': 'g', 'Siege Ballista': 'g', 'Smoke Mine': 'g', 'Snipe': 'g',
-    'Spectral Helix': 'g', 'Spectral Shield Throw': 'g', 'Spectral Throw': 'g', 'Split Arrow': 'g',
-    'Splitting Steel': 'g', 'Storm Rain': 'g', 'Summon Ice Golem': 'g', 'Temporal Chains': 'g',
-    'Temporal Rift': 'g', 'Thunderstorm': 'g', 'Tornado': 'g', 'Tornado Shot': 'g',
-    'Toxic Rain': 'g', 'Unearth': 'g', 'Vampiric Link': 'g', 'Venom Gyre': 'g',
-    'Viper Strike': 'g', 'Volatile Dead': 'g', 'Whirling Blades': 'g', 'Wild Strike': 'g',
+    // ── GREEN (Dexterity) ──────────────────────────────────────
+    'Ambush': 'g',     'Animate Weapon': 'g',     'Arctic Armour': 'g',     'Artillery Ballista': 'g',
+    'Barrage': 'g',     'Bear Trap': 'g',     'Blade Blast': 'g',     'Blade Flurry': 'g',
+    'Blade Trap': 'g',     'Blade Vortex': 'g',     'Bladefall': 'g',     'Blast Rain': 'g',
+    'Blink Arrow': 'g',     'Blood Rage': 'g',     'Burning Arrow': 'g',     'Caustic Arrow': 'g',
+    'Charged Dash': 'g',     'Cobra Lash': 'g',     'Conflagration': 'g',     'Cremation': 'g',
+    'Cyclone': 'g',     'Dash': 'g',     'Desecrate': 'g',     'Detonate Dead': 'g',
+    'Double Strike': 'g',     'Dual Strike': 'g',     'Elemental Hit': 'g',     'Ensnaring Arrow': 'g',
+    'Ethereal Knives': 'g',     'Explosive Arrow': 'g',     'Explosive Concoction': 'g',     'Explosive Trap': 'g',
+    'Fire Trap': 'g',     'Flamethrower Trap': 'g',     'Flicker Strike': 'g',     'Frenzy': 'g',
+    'Frost Blades': 'g',     'Galvanic Arrow': 'g',     'Glacial Shield Swipe': 'g',     'Grace': 'g',
+    'Haste': 'g',     'Hatred': 'g',     'Herald of Agony': 'g',     'Herald of Ice': 'g',
+    'Ice Shot': 'g',     'Ice Trap': 'g',     'Intuitive Link': 'g',     'Lacerate': 'g',
+    'Lancing Steel': 'g',     'Lightning Arrow': 'g',     'Lightning Strike': 'g',     'Mirror Arrow': 'g',
+    'Pestilent Strike': 'g',     'Phase Run': 'g',     'Plague Bearer': 'g',     'Poisonous Concoction': 'g',
+    'Precision': 'g',     'Puncture': 'g',     'Purity of Ice': 'g',     'Rain of Arrows': 'g',
+    'Reave': 'g',     'Scourge Arrow': 'g',     'Seismic Trap': 'g',     'Shattering Steel': 'g',
+    'Shrapnel Ballista': 'g',     'Siege Ballista': 'g',     'Smoke Mine': 'g',     'Snipe': 'g',
+    'Spectral Helix': 'g',     'Spectral Shield Throw': 'g',     'Spectral Throw': 'g',     'Split Arrow': 'g',
+    'Splitting Steel': 'g',     'Storm Rain': 'g',     'Summon Ice Golem': 'g',     'Temporal Chains': 'g',
+    'Temporal Rift': 'g',     'Thunderstorm': 'g',     'Tornado': 'g',     'Tornado Shot': 'g',
+    'Toxic Rain': 'g',     'Unearth': 'g',     'Vampiric Link': 'g',     'Venom Gyre': 'g',
+    'Viper Strike': 'g',     'Volatile Dead': 'g',     'Whirling Blades': 'g',     'Wild Strike': 'g',
     'Withering Step': 'g',
 
-    // ── BLUE (Intelligence) ───────────────────────────────────────────────────
-    'Arc': 'b', 'Arcane Cloak': 'b', 'Arcanist Brand': 'b', 'Armageddon Brand': 'b',
-    'Automation': 'b', 'Ball Lightning': 'b', 'Bane': 'b', 'Blazing Salvo': 'b',
-    'Blight': 'b', 'Bodyswap': 'b', 'Bone Offering': 'b', 'Brand Recall': 'b',
-    'Clarity': 'b', 'Cold Snap': 'b', 'Conductivity': 'b', 'Contagion': 'b',
-    'Conversion Trap': 'b', 'Crackling Lance': 'b', 'Creeping Frost': 'b', 'Dark Pact': 'b',
-    'Despair': 'b', 'Destructive Link': 'b', 'Discharge': 'b', 'Discipline': 'b',
-    'Divine Ire': 'b', 'Divine Retribution': 'b', 'Elemental Weakness': 'b', 'Energy Blade': 'b',
-    'Enfeeble': 'b', 'Essence Drain': 'b', 'Eye of Winter': 'b', 'Fireball': 'b',
-    'Firestorm': 'b', 'Flame Dash': 'b', 'Flame Surge': 'b', 'Flame Wall': 'b',
-    'Flameblast': 'b', 'Flammability': 'b', 'Flesh Offering': 'b', 'Forbidden Rite': 'b',
-    'Freezing Pulse': 'b', 'Frost Bomb': 'b', 'Frost Shield': 'b', 'Frost Wall': 'b',
-    'Frostbite': 'b', 'Frostblink': 'b', 'Frostbolt': 'b', 'Galvanic Field': 'b',
-    'Glacial Cascade': 'b', 'Herald of Thunder': 'b', 'Hexblast': 'b', 'Hydrosphere': 'b',
-    'Ice Nova': 'b', 'Ice Spear': 'b', 'Icicle Mine': 'b', 'Incinerate': 'b',
-    'Kinetic Blast': 'b', 'Kinetic Bolt': 'b', 'Kinetic Fusillade': 'b', 'Kinetic Rain': 'b',
-    'Lightning Conduit': 'b', 'Lightning Spire Trap': 'b', 'Lightning Tendrils': 'b', 'Lightning Trap': 'b',
-    'Lightning Warp': 'b', 'Malevolence': 'b', 'Manabond': 'b', 'Orb of Storms': 'b',
-    'Penance Brand': 'b', 'Power Siphon': 'b', 'Purifying Flame': 'b', 'Purity of Elements': 'b',
-    'Purity of Lightning': 'b', 'Pyroclast Mine': 'b', 'Raise Spectre': 'b', 'Raise Zombie': 'b',
-    'Righteous Fire': 'b', 'Rolling Magma': 'b', 'Scorching Ray': 'b', 'Shock Nova': 'b',
-    'Sigil of Power': 'b', 'Siphoning Trap': 'b', 'Somatic Shell': 'b', 'Soul Link': 'b',
-    'Soulrend': 'b', 'Spark': 'b', 'Spellslinger': 'b', 'Spirit Offering': 'b',
-    'Storm Brand': 'b', 'Storm Burst': 'b', 'Storm Call': 'b', 'Stormbind': 'b',
-    'Stormblast Mine': 'b', 'Summon Carrion Golem': 'b', 'Summon Chaos Golem': 'b', 'Summon Holy Relic': 'b',
-    'Summon Lightning Golem': 'b', 'Summon Raging Spirit': 'b', 'Summon Reaper': 'b', 'Summon Skeletons': 'b',
-    'Summon Skitterbots': 'b', 'Tempest Shield': 'b', 'Void Sphere': 'b', 'Voltaxic Burst': 'b',
-    'Vortex': 'b', 'Wall of Force': 'b', 'Wave of Conviction': 'b', 'Winter Orb': 'b',
-    'Wintertide Brand': 'b', 'Wither': 'b', 'Wrath': 'b', 'Zealotry': 'b',
+    // ── BLUE (Intelligence) ────────────────────────────────────
+    'Arc': 'b',     'Arcane Cloak': 'b',     'Arcanist Brand': 'b',     'Armageddon Brand': 'b',
+    'Automation': 'b',     'Ball Lightning': 'b',     'Bane': 'b',     'Blazing Salvo': 'b',
+    'Blight': 'b',     'Bodyswap': 'b',     'Bone Offering': 'b',     'Brand Recall': 'b',
+    'Clarity': 'b',     'Cold Snap': 'b',     'Conductivity': 'b',     'Contagion': 'b',
+    'Conversion Trap': 'b',     'Crackling Lance': 'b',     'Creeping Frost': 'b',     'Dark Pact': 'b',
+    'Despair': 'b',     'Destructive Link': 'b',     'Discharge': 'b',     'Discipline': 'b',
+    'Divine Ire': 'b',     'Divine Retribution': 'b',     'Elemental Weakness': 'b',     'Energy Blade': 'b',
+    'Enfeeble': 'b',     'Essence Drain': 'b',     'Eye of Winter': 'b',     'Fireball': 'b',
+    'Firestorm': 'b',     'Flame Dash': 'b',     'Flame Surge': 'b',     'Flame Wall': 'b',
+    'Flameblast': 'b',     'Flammability': 'b',     'Flesh Offering': 'b',     'Forbidden Rite': 'b',
+    'Freezing Pulse': 'b',     'Frost Bomb': 'b',     'Frost Shield': 'b',     'Frost Wall': 'b',
+    'Frostbite': 'b',     'Frostblink': 'b',     'Frostbolt': 'b',     'Galvanic Field': 'b',
+    'Glacial Cascade': 'b',     'Herald of Thunder': 'b',     'Hexblast': 'b',     'Hydrosphere': 'b',
+    'Ice Nova': 'b',     'Ice Spear': 'b',     'Icicle Mine': 'b',     'Incinerate': 'b',
+    'Kinetic Blast': 'b',     'Kinetic Bolt': 'b',     'Kinetic Fusillade': 'b',     'Kinetic Rain': 'b',
+    'Lightning Conduit': 'b',     'Lightning Spire Trap': 'b',     'Lightning Tendrils': 'b',     'Lightning Trap': 'b',
+    'Lightning Warp': 'b',     'Malevolence': 'b',     'Manabond': 'b',     'Orb of Storms': 'b',
+    'Penance Brand': 'b',     'Power Siphon': 'b',     'Purifying Flame': 'b',     'Purity of Elements': 'b',
+    'Purity of Lightning': 'b',     'Pyroclast Mine': 'b',     'Raise Spectre': 'b',     'Raise Zombie': 'b',
+    'Righteous Fire': 'b',     'Rolling Magma': 'b',     'Scorching Ray': 'b',     'Shock Nova': 'b',
+    'Sigil of Power': 'b',     'Siphoning Trap': 'b',     'Somatic Shell': 'b',     'Soul Link': 'b',
+    'Soulrend': 'b',     'Spark': 'b',     'Spellslinger': 'b',     'Spirit Offering': 'b',
+    'Storm Brand': 'b',     'Storm Burst': 'b',     'Storm Call': 'b',     'Stormbind': 'b',
+    'Stormblast Mine': 'b',     'Summon Carrion Golem': 'b',     'Summon Chaos Golem': 'b',     'Summon Holy Relic': 'b',
+    'Summon Lightning Golem': 'b',     'Summon Raging Spirit': 'b',     'Summon Reaper': 'b',     'Summon Skeletons': 'b',
+    'Summon Skitterbots': 'b',     'Tempest Shield': 'b',     'Void Sphere': 'b',     'Voltaxic Burst': 'b',
+    'Vortex': 'b',     'Wall of Force': 'b',     'Wave of Conviction': 'b',     'Winter Orb': 'b',
+    'Wintertide Brand': 'b',     'Wither': 'b',     'Wrath': 'b',     'Zealotry': 'b',
+  };
+
+  // ─── Transfigured gem list (authoritative, from poewiki) ─────────────────
+  // Source: poewiki.net/wiki/Transfigured_skill_gem (via gem_colors_transfigured.json)
+  const TRANSFIG_GEMS = {
+    r: [
+      'Absolution of Inspiring','Animate Guardian of Smiting','Bladestorm of Uncertainty',
+      'Boneshatter of Carnage','Boneshatter of Complex Trauma','Cleave of Rage',
+      'Consecrated Path of Endurance','Dominating Blow of Inspiring','Earthquake of Amplification',
+      'Earthshatter of Fragility','Earthshatter of Prominence','Exsanguinate of Transmission',
+      'Frozen Legion of Rallying','Glacial Hammer of Shattering','Ground Slam of Earthshaking',
+      'Holy Flame Totem of Ire','Ice Crash of Cadence','Infernal Blow of Immolation',
+      'Leap Slam of Groundbreaking','Molten Strike of the Zenith','Perforate of Bloodshed',
+      'Perforate of Duality','Rage Vortex of Berserking','Shield Crush of the Chieftain',
+      'Smite of Divine Judgement','Summon Flame Golem of Hordes','Summon Flame Golem of the Meteor',
+      'Summon Stone Golem of Hordes','Summon Stone Golem of Safeguarding','Sunder of Earthbreaking',
+      'Tectonic Slam of Cataclysm','Volcanic Fissure of Snaking',
+    ],
+    g: [
+      'Animate Weapon of Ranged Arms','Animate Weapon of Self Reflection','Artillery Ballista of Cross Strafe',
+      'Artillery Ballista of Focus Fire','Barrage of Volley Fire','Bear Trap of Skewers',
+      'Blade Blast of Dagger Detonation','Blade Blast of Unloading','Blade Flurry of Incision',
+      'Blade Trap of Greatswords','Blade Trap of Laceration','Blade Vortex of the Scythe',
+      'Bladefall of Impaling','Bladefall of Volleys','Blink Arrow of Bombarding Clones',
+      'Blink Arrow of Prismatic Clones','Burning Arrow of Vigour','Caustic Arrow of Poison',
+      'Cremation of Exhuming','Cremation of the Volcano','Cyclone of Tumult',
+      'Detonate Dead of Chain Reaction','Detonate Dead of Scavenging','Double Strike of Impaling',
+      'Double Strike of Momentum','Dual Strike of Ambidexterity','Elemental Hit of the Spectrum',
+      'Ethereal Knives of Lingering Blades','Ethereal Knives of the Massacre','Explosive Concoction of Destruction',
+      'Explosive Trap of Magnitude','Explosive Trap of Shrapnel','Fire Trap of Blasting',
+      'Flicker Strike of Power','Frenzy of Onslaught','Frost Blades of Katabasis',
+      'Galvanic Arrow of Energy','Galvanic Arrow of Surging','Ice Shot of Penetration',
+      'Ice Trap of Hollowness','Lacerate of Butchering','Lacerate of Haemorrhage',
+      'Lancing Steel of Spraying','Lightning Arrow of Electrocution','Lightning Strike of Arcing',
+      'Mirror Arrow of Bombarding Clones','Mirror Arrow of Prismatic Clones','Poisonous Concoction of Bouncing',
+      'Puncture of Shanking','Rain of Arrows of Artillery','Rain of Arrows of Saturation',
+      'Reave of Refraction','Scourge Arrow of Menace','Seismic Trap of Swells',
+      'Shattering Steel of Ammunition','Shrapnel Ballista of Steel','Siege Ballista of Splintering',
+      'Spectral Shield Throw of Shattering','Spectral Throw of Materialising','Split Arrow of Splitting',
+      'Splitting Steel of Ammunition','Storm Rain of the Conduit','Storm Rain of the Fence',
+      'Summon Ice Golem of Hordes','Summon Ice Golem of Shattering','Tornado Shot of Cloudburst',
+      'Tornado of Elemental Turbulence','Toxic Rain of Sporeburst','Toxic Rain of Withering',
+      'Viper Strike of the Mamba','Volatile Dead of Confinement','Volatile Dead of Seething',
+      'Wild Strike of Extremes',
+    ],
+    b: [
+      'Arc of Oscillating','Arc of Surging','Armageddon Brand of Recall',
+      'Armageddon Brand of Volatility','Ball Lightning of Orbiting','Ball Lightning of Static',
+      'Bane of Condemnation','Blight of Atrophy','Blight of Contagion',
+      'Bodyswap of Sacrifice','Cold Snap of Power','Contagion of Subsiding',
+      'Contagion of Transference','Crackling Lance of Branching','Crackling Lance of Disintegration',
+      'Discharge of Misery','Divine Ire of Disintegration','Divine Ire of Holy Lightning',
+      'Essence Drain of Desperation','Essence Drain of Wickedness','Eye of Winter of Finality',
+      'Eye of Winter of Transience','Firestorm of Meteors','Firestorm of Pelting',
+      'Flame Dash of Return','Flame Surge of Combusting','Flameblast of Celerity',
+      'Flameblast of Contraction','Forbidden Rite of Soul Sacrifice','Frost Bomb of Forthcoming',
+      'Frost Bomb of Instability','Frostblink of Wintry Blast','Galvanic Field of Intensity',
+      'Glacial Cascade of the Fissure','Hexblast of Contradiction','Hexblast of Havoc',
+      'Ice Nova of Deep Freeze','Ice Nova of Frostbolts','Ice Spear of Splitting',
+      'Icicle Mine of Fanning','Icicle Mine of Sabotage','Incinerate of Expanse',
+      'Incinerate of Venting','Kinetic Blast of Clustering','Kinetic Bolt of Fragmentation',
+      'Kinetic Rain of Impact','Lightning Conduit of the Heavens','Lightning Spire Trap of Overloading',
+      'Lightning Spire Trap of Zapping','Lightning Tendrils of Eccentricity','Lightning Tendrils of Escalation',
+      'Lightning Trap of Sparking','Penance Brand of Conduction','Penance Brand of Dissipation',
+      'Power Siphon of the Archmage','Purifying Flame of Revelations','Pyroclast Mine of Sabotage',
+      'Raise Spectre of Transience','Raise Zombie of Falling','Raise Zombie of Slamming',
+      'Righteous Fire of Arcane Devotion','Scorching Ray of Immolation','Soulrend of Reaping',
+      'Soulrend of the Spiral','Spark of Unpredictability','Spark of the Nova',
+      'Storm Brand of Indecision','Stormbind of Teleportation','Summon Carrion Golem of Hordes',
+      'Summon Carrion Golem of Scavenging','Summon Chaos Golem of Hordes','Summon Chaos Golem of the Maelström',
+      'Summon Holy Relic of Conviction','Summon Lightning Golem of Hordes','Summon Raging Spirit of Enormity',
+      'Summon Reaper of Eviscerating','Summon Reaper of Revenants','Summon Skeletons of Archers',
+      'Summon Skeletons of Mages','Void Sphere of Rending','Vortex of Projection',
+    ],
   };
 
   // ─── Helpers ──────────────────────────────────────────────────────────────
@@ -216,86 +290,97 @@
   function processGems(apiData, topN = 5) {
     const lines = (apiData.lines || []).filter(g => !g.corrupted);
 
-    // Base gem names come from two sources:
-    // 1. Static GEM_COLORS keys — vendor-bought gems that never appear on poe.ninja
-    // 2. Any API gem whose name has no " of " — traded base gems (high level/quality)
-    // Gems like "Wave of Conviction" have " of " so they stay out of apiBases; their
-    // base prefix "Wave" won't appear in staticBases → correctly excluded.
-    const staticBases = new Set(Object.keys(GEM_COLORS));
-    const apiBases    = new Set(lines.filter(g => !g.name.includes(' of ')).map(g => g.name));
-    const knownBases  = new Set([...staticBases, ...apiBases]);
-    console.log('[GemCheck] lines total:', lines.length, '| staticBases:', staticBases.size, '| apiBases:', apiBases.size);
-    console.log('[GemCheck] gems containing " of ":', lines.filter(g => g.name.includes(' of ')).slice(0, 8).map(g => g.name));
-
-    // Cheapest entry per transfigured gem name
-    const cheapTransfig = {};   // transfigName → {name, sellPrice, count, icon}
+    // Build cheapest price lookup from API: transfig name → entry
+    const priceMap = {};
     lines.forEach(gem => {
-      const i = gem.name.lastIndexOf(' of ');
-      if (i <= 0) return;
-      const base = gem.name.slice(0, i);
-      if (!knownBases.has(base)) return;   // not a recognised base gem
-      const key = gem.name;
-      if (!cheapTransfig[key] || gem.chaosValue < cheapTransfig[key].sellPrice) {
-        cheapTransfig[key] = {
-          name: gem.name,
-          baseName: base,
+      if (!priceMap[gem.name] || gem.chaosValue < priceMap[gem.name].sellPrice) {
+        priceMap[gem.name] = {
           sellPrice: gem.chaosValue,
           count: gem.count || 0,
           icon: gem.icon || '',
         };
       }
     });
+    console.log('[GemCheck] API lines:', lines.length, '| priceMap entries:', Object.keys(priceMap).length);
 
-    const allTransfig = Object.values(cheapTransfig);
-    console.log('[GemCheck] identified transfigured:', allTransfig.length, '| sample:', allTransfig.slice(0, 5).map(g => g.name));
+    // ── Build per-base-gem entries from the authoritative static list ──────
+    // Pool sizes and variant counts come from TRANSFIG_GEMS, not the API.
+    // Gems with no API listing still occupy a pool slot (sellPrice = 0).
+    const gemEntries = [];
+    for (const [c, names] of Object.entries(TRANSFIG_GEMS)) {
+      // Group by base name
+      const byBase = {};
+      names.forEach(name => {
+        const i = name.lastIndexOf(' of ');
+        const baseName = name.slice(0, i);
+        if (!byBase[baseName]) byBase[baseName] = [];
+        const p = priceMap[name];
+        byBase[baseName].push({
+          name,
+          baseName,
+          sellPrice: p ? p.sellPrice : 0,
+          count: p ? p.count : 0,
+          icon: p ? p.icon : '',
+          listed: !!p,
+        });
+      });
 
-    // ── Group by base gem ──────────────────────────────────────────────────
-    const byBase = {};
-    allTransfig.forEach(g => {
-      if (!byBase[g.baseName]) byBase[g.baseName] = [];
-      byBase[g.baseName].push(g);
-    });
+      for (const [baseName, variants] of Object.entries(byBase)) {
+        const n = variants.length;
+        const ev = variants.reduce((s, v) => s + v.sellPrice, 0) / n;
+        gemEntries.push({
+          baseName,
+          color: c,
+          variants: variants.map(v => ({ ...v, prob: 1 / n }))
+                            .sort((a, b) => b.sellPrice - a.sellPrice),
+          ev,
+          variantCount: n,
+        });
+      }
+    }
 
-    // Build per-base-gem entries with EV and probability
-    const gemEntries = Object.entries(byBase).map(([baseName, variants]) => {
-      const n = variants.length;
-      const ev = variants.reduce((s, v) => s + v.sellPrice, 0) / n;
-      const color = getColor(baseName);
-      return {
-        baseName,
-        color,
-        variants: variants.map(v => ({ ...v, prob: 1 / n })).sort((a, b) => b.sellPrice - a.sellPrice),
-        ev,
-        variantCount: n,
-        totalListings: variants.reduce((s, v) => s + v.count, 0),
-      };
-    });
-
-    // ── Group by color ─────────────────────────────────────────────────────
-    const colorGroups = { r: [], g: [], b: [], u: [] };
-    allTransfig.forEach(g => {
-      const c = getColor(g.baseName);
-      colorGroups[c].push(g);
-    });
-
+    // Divine Font shows 3 random gems from the color pool — you pick the best.
+    // Pool size = full static count (including unlisted gems).
+    // P(seeing a specific gem in 3 draws) = 1 - ((n-1)/n)^3
+    // EV of best-of-3 = order-statistic expected value across all pool gems.
+    const FONT_DRAWS = 3;
     const colorStats = {};
-    for (const [c, gems] of Object.entries(colorGroups)) {
-      if (!gems.length) continue;
-      const n = gems.length;
-      const avg = gems.reduce((s, g) => s + g.sellPrice, 0) / n;
-      const top = [...gems].sort((a, b) => b.sellPrice - a.sellPrice).slice(0, topN);
+
+    for (const c of ['r', 'g', 'b']) {
+      const poolGems = TRANSFIG_GEMS[c].map(name => ({
+        name,
+        sellPrice: priceMap[name]?.sellPrice || 0,
+        count:     priceMap[name]?.count     || 0,
+        icon:      priceMap[name]?.icon      || '',
+      }));
+      const n = poolGems.length;
+      const sorted = [...poolGems].sort((a, b) => b.sellPrice - a.sellPrice);
+
+      // sorted is descending (i=0 = most expensive = rank n).
+      // P(gem at index i is the max of FONT_DRAWS draws) = ((n-i)/n)^k - ((n-i-1)/n)^k
+      let poolEv = 0;
+      sorted.forEach((g, i) => {
+        const pBest = Math.pow((n - i) / n, FONT_DRAWS) - Math.pow((n - i - 1) / n, FONT_DRAWS);
+        poolEv += g.sellPrice * pBest;
+      });
+
       colorStats[c] = {
         color: c,
         poolSize: n,
-        poolEv: avg,
-        bingo: top.map(g => ({ ...g, prob: 1 / n })),
+        poolEv,
+        // Only show bingo gems that have a price listing
+        bingo: sorted.filter(g => g.sellPrice > 0).slice(0, topN).map(g => ({
+          ...g,
+          prob: 1 - Math.pow((n - 1) / n, FONT_DRAWS),
+        })),
       };
     }
 
-    // Combined gem picks across all colors, sorted by EV descending
-    const gemPicks = [...gemEntries].sort((a, b) => b.ev - a.ev);
+    // Combined specific gem picks across all colors, sorted by EV descending
+    const gemPicks = gemEntries.sort((a, b) => b.ev - a.ev);
+    const totalTransfig = Object.values(TRANSFIG_GEMS).reduce((s, a) => s + a.length, 0);
 
-    return { colorStats, gemPicks, totalLines: lines.length, totalTransfig: allTransfig.length };
+    return { colorStats, gemPicks, totalLines: lines.length, totalTransfig };
   }
 
   // ─── CSS (Shadow DOM) ─────────────────────────────────────────────────────
@@ -482,8 +567,13 @@
     const poolSize = stats.poolSize;
     const poolEv   = stats.poolEv;
 
-    const hitChance = poolSize ? pct(1 / poolSize) : '—';
-    let bingoHtml = `<div class="col-title">🎯 Color Roll Bingo</div>`;
+    const hitChance = poolSize ? pct(1 - Math.pow((poolSize - 1) / poolSize, 3)) : '—';
+    const hitTitle  = poolSize
+      ? `Hit chance per gem: 1 - ((${poolSize}-1)/${poolSize})³ = ${hitChance}\n`
+      + `Pool: ${poolSize} gems total (all transfigured gems of this colour)\n`
+      + `3 draws: Divine Font shows 3 random gems from the pool — you pick the best one`
+      : '';
+    let bingoHtml = `<div class="col-title">🎯 Color Roll Bingo (pick best of 3)</div>`;
     if (stats.bingo.length) {
       bingoHtml += stats.bingo.map(g => `
         <div class="gem-row" title="${g.count} listed">
@@ -499,7 +589,7 @@
       <div class="ccard" style="--accent:${m.accent};--bg:${m.bg};--border:${m.border}">
         <div class="ccard-hdr">
           <span class="cbadge">${m.label}</span>
-          <span class="ccard-title">Transfigured Gems</span>
+          <span class="ccard-title" title="${escHtml(hitTitle)}">Transfigured Gems</span>
           <span class="pool-ev">EV: <strong>${fmtC(poolEv)}</strong> · ${poolSize} gems · <strong>${hitChance}</strong> each</span>
         </div>
         <div class="col">${bingoHtml}</div>
@@ -555,10 +645,8 @@
 
     body.innerHTML = html;
 
-    const known = ['r', 'g', 'b'].reduce((s, c) => s + (colorStats[c]?.poolSize || 0), 0);
-    const total = Object.values(colorStats).reduce((s, c) => s + c.poolSize, 0);
     status.className = '';
-    status.textContent = `${total} transfigured · ${known} with known colour · ${results.totalLines} total gem entries from API`;
+    status.textContent = `${results.totalTransfig} transfigured gems (static) · ${results.totalLines} API entries`;
   }
 
   // ─── Drag ─────────────────────────────────────────────────────────────────
