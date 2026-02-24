@@ -155,17 +155,33 @@
 
   function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
+  // poe.ninja URL slugs use suffixes for league variants; the API expects
+  // the full human-readable name, e.g. "keepershc" → "Hardcore Keepers"
+  function normalizeLeague(slug) {
+    let name = slug.toLowerCase();
+    let prefix = '';
+    if (name.endsWith('hcssf') || name.endsWith('ssfhc')) {
+      prefix = 'Hardcore SSF '; name = name.slice(0, -5);
+    } else if (name.endsWith('ssf')) {
+      prefix = 'SSF ';          name = name.slice(0, -3);
+    } else if (name.endsWith('hc')) {
+      prefix = 'Hardcore ';     name = name.slice(0, -2);
+    }
+    return prefix + cap(name);
+  }
+
   async function fetchGems(league) {
     const now = Date.now();
     if (_cache && _cacheLeague === league && now - _cacheTime < CACHE_TTL) return _cache;
 
     // poe.ninja added PoE2 support and likely changed their API.
     // Try variants: with/without game=poe1, capitalised/lower league name.
+    const normalized = normalizeLeague(league);
     const variants = [
-      `${API}?league=${cap(league)}&type=SkillGem&game=poe1`,
-      `${API}?league=${encodeURIComponent(league)}&type=SkillGem&game=poe1`,
-      `${API}?league=${cap(league)}&type=SkillGem`,
-      `${API}?league=${encodeURIComponent(league)}&type=SkillGem`,
+      `${API}?league=${encodeURIComponent(normalized)}&type=SkillGem&game=poe1`,
+      `${API}?league=${encodeURIComponent(cap(league))}&type=SkillGem&game=poe1`,
+      `${API}?league=${encodeURIComponent(normalized)}&type=SkillGem`,
+      `${API}?league=${encodeURIComponent(cap(league))}&type=SkillGem`,
     ];
 
     for (const url of variants) {
@@ -570,10 +586,6 @@
   async function init() {
     document.getElementById('gemcheck-host')?.remove();
 
-    // Inject page-context interceptor as early as possible so we catch
-    // poe.ninja's own API calls even if our direct requests fail.
-    injectInterceptor();
-
     const league = leagueFromUrl();
     const { host, shadow } = buildPanel(league);
     makeDraggable(host, shadow.getElementById('hdr'));
@@ -612,6 +624,10 @@
 
     load();
   }
+
+  // Inject interceptor immediately at script load (document_start) so we hook
+  // window.fetch before poe.ninja's own scripts make their API calls.
+  injectInterceptor();
 
   // ─── SPA navigation detection ─────────────────────────────────────────────
   const _origPush    = history.pushState.bind(history);
