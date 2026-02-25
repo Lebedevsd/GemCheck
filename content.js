@@ -511,6 +511,32 @@
     /* ── Empty / skeleton ── */
     .empty { text-align: center; padding: 20px; color: #8b949e; font-size: 12px; }
 
+    /* ── Footer ── */
+    #footer {
+      flex-shrink: 0;
+      border-top: 1px solid #21262d;
+      padding: 8px 14px;
+      text-align: center;
+    }
+    #footer a {
+      display: inline-block;
+      font-size: 13px; font-weight: 600;
+      text-decoration: none;
+      padding: 5px 18px;
+      border-radius: 20px;
+      background: #21262d;
+      color: #8b949e;
+      border: 1px solid #30363d;
+      transition: background .2s, color .2s, box-shadow .2s, border-color .2s, transform .15s;
+    }
+    #footer a:hover {
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 0 14px rgba(220,39,67,.7), 0 0 32px rgba(188,24,136,.5);
+      transform: scale(1.04);
+    }
+
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
@@ -539,14 +565,17 @@
             <label for="top-n">Top</label>
             <select id="top-n">
               <option value="3">3</option>
-              <option value="5" selected>5</option>
-              <option value="8">8</option>
+              <option value="5">5</option>
+              <option value="8" selected>8</option>
             </select>
             <span>gems per colour</span>
           </div>
         </div>
         <div id="status" class="load">Loading…</div>
         <div id="body"></div>
+        <div id="footer">
+          <a href="https://buymeacoffee.com/lebedevsd" target="_blank" rel="noopener">☕ Buy me a coffee</a>
+        </div>
       </div>`;
 
     return { host, shadow };
@@ -679,7 +708,7 @@
     makeDraggable(host, shadow.getElementById('hdr'));
 
     const status = shadow.getElementById('status');
-    let topN = 5;
+    let topN = 8;
 
     async function load(bustCache = false) {
       status.className = 'load';

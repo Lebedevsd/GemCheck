@@ -55,6 +55,40 @@ Coming soon.
 
 ---
 
+## Development
+
+### Prerequisites
+- Python 3 (stdlib only, no pip required)
+- make (optional, all commands have Python equivalents)
+
+### Workflow
+
+```bash
+make fetch      # pull latest gem data from poewiki
+make update     # rewrite gem arrays in content.js from fetched JSONs
+make pack       # build gemcheck.zip ready for the Chrome Web Store
+make release    # all three in one shot (new league? run this)
+make version    # print current version
+make clean      # remove gemcheck.zip
+```
+
+### Loading in Chrome for testing
+
+1. Open `chrome://extensions`
+2. Enable **Developer mode** (top-right toggle)
+3. Click **Load unpacked** → select this folder
+4. Make changes to `content.js`, then click **↻** in `chrome://extensions` to reload
+
+### Updating gem data (new league)
+
+```bash
+make release
+```
+
+This scrapes poewiki for the latest base gem and transfigured gem lists, updates the static arrays in `content.js`, and rebuilds the zip.
+
+---
+
 ## Data sources
 
 - **Gem prices** — [poe.ninja](https://poe.ninja) public API (`/api/data/itemoverview?type=SkillGem`)
@@ -71,3 +105,11 @@ GemCheck collects no user data. See [PrivacyPolicy.md](PrivacyPolicy.md) for ful
 ## Licence
 
 [MIT](LICENSE)
+
+---
+
+## Support
+
+If GemCheck saves you some chaos, consider buying me a coffee!
+
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-donate-yellow?logo=buy-me-a-coffee)](https://buymeacoffee.com/lebedevsd)

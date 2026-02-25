@@ -15,6 +15,10 @@
     },
     "default_title": "GemCheck"
   },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["tabs"],
   "content_scripts": [
     {
       "matches": ["https://poe.ninja/*/economy/*/skill-gems*"],

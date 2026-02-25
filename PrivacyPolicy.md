@@ -1,6 +1,6 @@
 # Privacy Policy – GemCheck
 
-**Last updated: 24 February 2026**
+**Last updated: 25 February 2026**
 
 ## Overview
 
@@ -41,10 +41,22 @@ GemCheck does not use `localStorage`, `sessionStorage`, `IndexedDB`, cookies,
 or any other persistent storage mechanism. The only state kept is a short-lived
 in-memory price cache (5 minutes) that is discarded when the browser tab is closed.
 
+## Permissions
+
+GemCheck uses the `tabs` permission solely to open `https://poe.ninja` in a new
+tab when the user clicks the extension icon. No tab data, browsing history, or
+any other tab information is read or stored.
+
 ## Third Parties
 
 GemCheck does not share any data with third parties. It has no dependencies on
 advertising networks, analytics services, or external libraries loaded at runtime.
+
+The panel contains an optional **"Buy me a coffee"** link to
+[buymeacoffee.com](https://buymeacoffee.com). Clicking it navigates to that
+external site in a new tab. GemCheck does not transmit any data to that site —
+it is a plain HTML link. buymeacoffee.com's own privacy policy applies if you
+choose to visit it.
 
 ## Children's Privacy
 

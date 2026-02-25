@@ -4,7 +4,7 @@ import zipfile
 import os
 import sys
 
-FILES = ['manifest.json', 'content.js', 'icon16.png', 'icon48.png', 'icon128.png']
+FILES = ['manifest.json', 'background.js', 'content.js', 'icon16.png', 'icon48.png', 'icon128.png']
 OUTPUT = 'gemcheck.zip'
 
 def main():
