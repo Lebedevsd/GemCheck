@@ -1,8 +1,10 @@
 # GemCheck – PoE Transfigured Gem Calculator
 
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-donate-yellow?logo=buy-me-a-coffee)](https://buymeacoffee.com/lebedevsd)
+
 A Chrome extension that overlays a floating panel on [poe.ninja](https://poe.ninja) and calculates which transfigured gems are most profitable to farm at the **Labyrinth Divine Font** in Path of Exile.
 
-![GemCheck panel screenshot](screenshot_store.png)
+![GemCheck panel screenshot](assets/screenshot_store.png)
 
 ---
 
@@ -106,10 +108,3 @@ GemCheck collects no user data. See [PrivacyPolicy.md](PrivacyPolicy.md) for ful
 
 [MIT](LICENSE)
 
----
-
-## Support
-
-If GemCheck saves you some chaos, consider buying me a coffee!
-
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-donate-yellow?logo=buy-me-a-coffee)](https://buymeacoffee.com/lebedevsd)

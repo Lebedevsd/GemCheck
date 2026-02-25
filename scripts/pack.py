@@ -4,10 +4,22 @@ import zipfile
 import os
 import sys
 
-FILES = ['manifest.json', 'background.js', 'content.js', 'icon16.png', 'icon48.png', 'icon128.png']
-OUTPUT = 'gemcheck.zip'
+# Paths are relative to the project root (one level up from scripts/)
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+FILES = [
+    'manifest.json',
+    'src/background.js',
+    'src/content.js',
+    'assets/icon16.png',
+    'assets/icon48.png',
+    'assets/icon128.png',
+]
+OUTPUT = os.path.join(ROOT, 'gemcheck.zip')
+
 
 def main():
+    os.chdir(ROOT)
     missing = [f for f in FILES if not os.path.exists(f)]
     if missing:
         print(f'ERROR: missing files: {", ".join(missing)}', file=sys.stderr)
@@ -19,7 +31,8 @@ def main():
             print(f'  added: {f}')
 
     size = os.path.getsize(OUTPUT)
-    print(f'done: {OUTPUT} ({size // 1024}K)')
+    print(f'done: gemcheck.zip ({size // 1024}K)')
+
 
 if __name__ == '__main__':
     main()

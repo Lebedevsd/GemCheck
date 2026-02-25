@@ -2,15 +2,15 @@
 
 # Build distributable zip
 pack:
-	python3 pack.py
+	python3 scripts/pack.py
 
 # Scrape latest gem data from poewiki
 fetch:
-	python3 scrape_gem_colors.py
+	python3 scripts/scrape_gem_colors.py
 
-# Rewrite static gem arrays in content.js from fetched JSONs
+# Rewrite static gem arrays in src/content.js from fetched JSONs
 update:
-	python3 update_gems.py
+	python3 scripts/update_gems.py
 
 # Full release workflow: fetch → update → pack
 release: fetch update pack

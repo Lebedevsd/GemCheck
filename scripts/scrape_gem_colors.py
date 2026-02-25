@@ -11,20 +11,23 @@ The base gem page has a 4th table for no-attribute gems (ignored).
 """
 
 import json
+import os
 import re
 import sys
 import urllib.request
 
+_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')
+
 PAGES = [
     {
         "url": "https://www.poewiki.net/wiki/List_of_skill_gems",
-        "out": "gem_colors.json",
+        "out": os.path.join(_ROOT, "gem_colors.json"),
         "label": "base gems",
         "n_tables": 3,  # first 3 of 4 (skip None table)
     },
     {
         "url": "https://www.poewiki.net/wiki/Transfigured_skill_gem",
-        "out": "gem_colors_transfigured.json",
+        "out": os.path.join(_ROOT, "gem_colors_transfigured.json"),
         "label": "transfigured gems",
         "n_tables": 3,  # all 3 tables are r/g/b
     },
