@@ -1,4 +1,4 @@
-.PHONY: pack fetch update release clean version
+.PHONY: pack fetch update release screenshot clean version
 
 # Build distributable zip
 pack:
@@ -18,6 +18,11 @@ release: fetch update pack
 # Print current extension version from manifest
 version:
 	python3 -c "import json; print(json.load(open('manifest.json'))['version'])"
+
+# Generate assets/screenshot_store.png from newest screenshot in project root
+# Optional: pass source explicitly with  make screenshot SRC=myfile.png
+screenshot:
+	python3 scripts/gen_screenshot.py $(SRC)
 
 clean:
 	rm -f gemcheck.zip

@@ -70,8 +70,15 @@ make fetch      # pull latest gem data from poewiki
 make update     # rewrite gem arrays in content.js from fetched JSONs
 make pack       # build gemcheck.zip ready for the Chrome Web Store
 make release    # all three in one shot (new league? run this)
+make screenshot # generate assets/screenshot_store.png from newest PNG in root
 make version    # print current version
 make clean      # remove gemcheck.zip
+```
+
+`make screenshot` auto-detects the newest `brave_*.png` or `Screenshot*.png` in the project root. To use a specific file:
+
+```bash
+make screenshot SRC=path/to/file.png
 ```
 
 ### Loading in Chrome for testing
