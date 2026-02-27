@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version (leave blank to use manifest.json)'
+        required: false
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read version from manifest
+        id: ver
+        run: |
+          MANIFEST_VER=$(python3 -c "import json; print(json.load(open('manifest.json'))['version'])")
+          VERSION="${{ inputs.version }}"
+          VERSION="${VERSION:-$MANIFEST_VER}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build zip
+        run: python3 scripts/pack.py
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: GemCheck ${{ steps.ver.outputs.tag }}
+          body: |
+            ## GemCheck ${{ steps.ver.outputs.tag }}
+
+            **Install:** Download `gemcheck.zip`, unzip it, then load as an unpacked extension in Chrome (`chrome://extensions` → Developer mode → Load unpacked).
+
+            Or wait for the Chrome Web Store release.
+          files: gemcheck.zip
+          draft: false
+          prerelease: false
