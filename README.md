@@ -38,13 +38,24 @@ GemCheck calculates the **expected value (EV)** and **hit probabilities** for bo
 ### From the Chrome Web Store *(recommended)*
 Coming soon.
 
-### From a GitHub Release *(easiest manual option)*
-1. Go to the [Releases](../../releases) page and download `gemcheck.zip` from the latest release.
+### From Firefox Add-ons *(under review)*
+The Firefox add-on has been submitted and is currently under review by Mozilla.
+
+### From a GitHub Release — Chrome
+1. Go to the [Releases](../../releases) page and download `gemcheck.zip`.
 2. Unzip it — you'll get a folder with `manifest.json`, `src/`, and `assets/`.
 3. Open Chrome and go to `chrome://extensions`.
 4. Enable **Developer mode** (top-right toggle).
 5. Click **Load unpacked** and select the unzipped folder.
 6. Navigate to `poe.ninja › Economy › [your league] › Skill Gems` — the panel appears automatically.
+
+### From a GitHub Release — Firefox
+1. Go to the [Releases](../../releases) page and download `gemcheck_firefox.zip`.
+2. Open Firefox and go to `about:debugging` → **This Firefox**.
+3. Click **Load Temporary Add-on** and select the zip directly (no need to unzip).
+4. Navigate to `poe.ninja › Economy › [your league] › Skill Gems` — the panel appears automatically.
+
+> **Note:** Temporary add-ons are removed when Firefox restarts. For a permanent install, the extension would need to be signed via [addons.mozilla.org](https://addons.mozilla.org).
 
 ---
 

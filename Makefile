@@ -1,8 +1,12 @@
-.PHONY: pack fetch update release screenshot clean version
+.PHONY: pack pack-firefox fetch update release screenshot clean version
 
-# Build distributable zip
+# Build distributable zip (Chrome)
 pack:
 	python3 scripts/pack.py
+
+# Build distributable zip (Firefox)
+pack-firefox:
+	python3 scripts/pack_firefox.py
 
 # Scrape latest gem data from poewiki
 fetch:
@@ -25,4 +29,4 @@ screenshot:
 	python3 scripts/gen_screenshot.py $(SRC)
 
 clean:
-	rm -f gemcheck.zip
+	rm -f gemcheck.zip gemcheck_firefox.zip

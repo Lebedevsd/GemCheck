@@ -26,8 +26,10 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: Build zip
-        run: python3 scripts/pack.py
+      - name: Build zips
+        run: |
+          python3 scripts/pack.py
+          python3 scripts/pack_firefox.py
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
@@ -37,9 +39,16 @@ jobs:
           body: |
             ## GemCheck ${{ steps.ver.outputs.tag }}
 
-            **Install:** Download `gemcheck.zip`, unzip it, then load as an unpacked extension in Chrome (`chrome://extensions` → Developer mode → Load unpacked).
+            | File | Browser |
+            |------|---------|
+            | `gemcheck.zip` | Chrome / Chromium |
+            | `gemcheck_firefox.zip` | Firefox |
 
-            Or wait for the Chrome Web Store release.
-          files: gemcheck.zip
+            **Chrome:** Download `gemcheck.zip`, unzip it, open `chrome://extensions` → Developer mode → Load unpacked → select the unzipped folder.
+
+            **Firefox:** Download `gemcheck_firefox.zip`, open `about:debugging` → This Firefox → Load Temporary Add-on → select the zip directly.
+          files: |
+            gemcheck.zip
+            gemcheck_firefox.zip
           draft: false
           prerelease: false

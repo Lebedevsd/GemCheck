@@ -543,6 +543,14 @@
   `;
 
   // ─── UI Builder ───────────────────────────────────────────────────────────
+
+  // Safe innerHTML replacement via DOMParser — avoids direct assignment of
+  // dynamic strings to innerHTML (satisfies addons-linter no-unsanitized rule).
+  function setHTML(el, html) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    el.replaceChildren(...Array.from(doc.body.childNodes).map(n => document.adoptNode(n)));
+  }
+
   function buildPanel(league) {
     const host = document.createElement('div');
     host.id = 'gemcheck-host';
@@ -550,33 +558,41 @@
     document.body.appendChild(host);
 
     const shadow = host.attachShadow({ mode: 'open' });
-    shadow.innerHTML = `
-      <style>${CSS}</style>
-      <div id="panel">
-        <div id="hdr">
-          <span id="title">⚗ GemCheck</span>
-          <span id="league-badge">${escHtml(league)}</span>
-          <button class="hbtn" id="btn-refresh">↻ Refresh</button>
-          <button class="hbtn" id="btn-min">—</button>
-          <button class="hbtn red" id="btn-close">✕</button>
-        </div>
-        <div id="ctrl">
-          <div class="cl">
-            <label for="top-n">Top</label>
-            <select id="top-n">
-              <option value="3">3</option>
-              <option value="5">5</option>
-              <option value="8" selected>8</option>
-            </select>
-            <span>gems per colour</span>
-          </div>
-        </div>
-        <div id="status" class="load">Loading…</div>
-        <div id="body"></div>
-        <div id="footer">
-          <a href="https://buymeacoffee.com/lebedevsd" target="_blank" rel="noopener">☕ Buy me a coffee</a>
-        </div>
-      </div>`;
+
+    // Inject CSS safely — textContent never parses as HTML
+    const style = document.createElement('style');
+    style.textContent = CSS;
+    shadow.appendChild(style);
+
+    // Static panel structure — no dynamic expressions in this string
+    const tpl = document.createElement('template');
+    tpl.innerHTML = '<div id="panel">'
+      + '<div id="hdr">'
+      +   '<span id="title">&#x2697; GemCheck</span>'
+      +   '<span id="league-badge"></span>'
+      +   '<button class="hbtn" id="btn-refresh">&#x21BB; Refresh</button>'
+      +   '<button class="hbtn" id="btn-min">&#x2014;</button>'
+      +   '<button class="hbtn red" id="btn-close">&#x2715;</button>'
+      + '</div>'
+      + '<div id="ctrl"><div class="cl">'
+      +   '<label for="top-n">Top</label>'
+      +   '<select id="top-n">'
+      +     '<option value="3">3</option>'
+      +     '<option value="5">5</option>'
+      +     '<option value="8" selected>8</option>'
+      +   '</select>'
+      +   '<span>gems per colour</span>'
+      + '</div></div>'
+      + '<div id="status" class="load">Loading\u2026</div>'
+      + '<div id="body"></div>'
+      + '<div id="footer">'
+      +   '<a href="https://buymeacoffee.com/lebedevsd" target="_blank" rel="noopener">&#x2615; Buy me a coffee</a>'
+      + '</div>'
+      + '</div>';
+    shadow.appendChild(tpl.content);
+
+    // Set dynamic value safely via textContent — never treated as markup
+    shadow.getElementById('league-badge').textContent = league;
 
     return { host, shadow };
   }
@@ -670,9 +686,9 @@
     }
     html += renderSpecificSection(gemPicks, topN);
 
-    if (!html) html = `<div class="empty">No transfigured gem data found for this league.</div>`;
+    if (!html) html = '<div class="empty">No transfigured gem data found for this league.</div>';
 
-    body.innerHTML = html;
+    setHTML(body, html);
 
     status.className = '';
     status.textContent = `${results.totalTransfig} transfigured gems (static) · ${results.totalLines} API entries`;

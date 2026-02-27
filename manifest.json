@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "GemCheck – PoE Transfigured Gem Calculator",
   "description": "Shows the most profitable transfigured gems to hunt via the Labyrinth Divine Font, with color-roll EV and per-gem probabilities.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "icons": {
     "16": "assets/icon16.png",
     "48": "assets/icon48.png",
