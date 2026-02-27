@@ -38,6 +38,14 @@ GemCheck calculates the **expected value (EV)** and **hit probabilities** for bo
 ### From the Chrome Web Store *(recommended)*
 Coming soon.
 
+### From a GitHub Release *(easiest manual option)*
+1. Go to the [Releases](../../releases) page and download `gemcheck.zip` from the latest release.
+2. Unzip it — you'll get a folder with `manifest.json`, `src/`, and `assets/`.
+3. Open Chrome and go to `chrome://extensions`.
+4. Enable **Developer mode** (top-right toggle).
+5. Click **Load unpacked** and select the unzipped folder.
+6. Navigate to `poe.ninja › Economy › [your league] › Skill Gems` — the panel appears automatically.
+
 ### Manual (Developer Mode)
 1. Download or clone this repository.
 2. Open Chrome and go to `chrome://extensions`.
