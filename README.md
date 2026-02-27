@@ -36,7 +36,7 @@ GemCheck calculates the **expected value (EV)** and **hit probabilities** for bo
 ## Installation
 
 ### From the Chrome Web Store *(recommended)*
-Coming soon.
+[Install GemCheck on the Chrome Web Store](https://chromewebstore.google.com/detail/gemcheck-%E2%80%93-poe-transfigur/phmbbgjdehfchfeogoaboeinekkpfjpm)
 
 ### From Firefox Add-ons *(under review)*
 The Firefox add-on has been submitted and is currently under review by Mozilla.
