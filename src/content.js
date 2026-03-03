@@ -16,14 +16,14 @@
     'Earthquake': 'r',     'Earthshatter': 'r',     'Enduring Cry': 'r',     'Eviscerate': 'r',
     'Exsanguinate': 'r',     'Flame Link': 'r',     'Flesh and Stone': 'r',     'Frozen Legion': 'r',
     'Glacial Hammer': 'r',     'Ground Slam': 'r',     'Heavy Strike': 'r',     'Herald of Ash': 'r',
-    'Herald of Purity': 'r',     'Holy Flame Totem': 'r',     'Ice Crash': 'r',     'Immortal Call': 'r',
-    'Infernal Blow': 'r',     'Infernal Cry': 'r',     'Intimidating Cry': 'r',     'Leap Slam': 'r',
-    'Molten Shell': 'r',     'Molten Strike': 'r',     'Perforate': 'r',     'Petrified Blood': 'r',
-    'Pride': 'r',     'Protective Link': 'r',     'Punishment': 'r',     'Purity of Fire': 'r',
-    'Rage Vortex': 'r',     'Rallying Cry': 'r',     'Reap': 'r',     'Rejuvenation Totem': 'r',
-    'Searing Bond': 'r',     'Seismic Cry': 'r',     'Shield Charge': 'r',     'Shield Crush': 'r',
-    'Shockwave Totem': 'r',     'Smite': 'r',     'Static Strike': 'r',     'Steelskin': 'r',
-    'Summon Flame Golem': 'r',     'Summon Stone Golem': 'r',     'Sunder': 'r',     'Sweep': 'r',
+    'Herald of Purity': 'r',     'Holy Flame Totem': 'r',     'Holy Sweep': 'r',     'Ice Crash': 'r',
+    'Immortal Call': 'r',     'Infernal Blow': 'r',     'Infernal Cry': 'r',     'Intimidating Cry': 'r',
+    'Leap Slam': 'r',     'Molten Shell': 'r',     'Molten Strike': 'r',     'Perforate': 'r',
+    'Petrified Blood': 'r',     'Pride': 'r',     'Protective Link': 'r',     'Punishment': 'r',
+    'Purity of Fire': 'r',     'Rage Vortex': 'r',     'Rallying Cry': 'r',     'Reap': 'r',
+    'Rejuvenation Totem': 'r',     'Searing Bond': 'r',     'Seismic Cry': 'r',     'Shield Charge': 'r',
+    'Shield Crush': 'r',     'Shockwave Totem': 'r',     'Smite': 'r',     'Static Strike': 'r',
+    'Steelskin': 'r',     'Summon Flame Golem': 'r',     'Summon Stone Golem': 'r',     'Sunder': 'r',
     'Swordstorm': 'r',     'Tectonic Slam': 'r',     'Vengeful Cry': 'r',     'Vigilant Strike': 'r',
     'Vitality': 'r',     'Volcanic Fissure': 'r',     'Vulnerability': 'r',     'War Banner': 'r',
 
@@ -327,7 +327,7 @@
 
       for (const [baseName, variants] of Object.entries(byBase)) {
         const n = variants.length;
-        const ev = variants.reduce((s, v) => s + v.sellPrice, 0) / n;
+        const ev = Math.max(...variants.map(v => v.sellPrice));
         gemEntries.push({
           baseName,
           color: c,
@@ -398,6 +398,7 @@
       flex-direction: column;
       box-shadow: 0 12px 40px rgba(0,0,0,.7);
       overflow: hidden;
+      position: relative;
     }
 
     /* ── Header ── */
@@ -437,6 +438,11 @@
       flex-shrink: 0;
     }
     .cl { font-size: 11px; color: #8b949e; display: flex; align-items: center; gap: 5px; }
+    #font-badge {
+      margin-left: auto; font-size: 11px; color: #e6b450;
+      background: rgba(230,180,80,.08); border: 1px solid rgba(230,180,80,.3);
+      border-radius: 8px; padding: 2px 8px; cursor: help; font-weight: 600;
+    }
     select, input[type=number] {
       background: #161b22; border: 1px solid #30363d;
       color: #c9d1d9; border-radius: 4px; padding: 2px 7px; font-size: 12px;
@@ -454,18 +460,35 @@
     #status.load { color: #388bfd; }
 
     /* ── Scroll body ── */
-    #body { overflow-y: auto; flex: 1; padding: 10px 12px; display: flex; flex-direction: column; gap: 12px; }
+    #body { overflow-y: auto; flex: 1; min-height: 0; padding: 10px 12px; display: flex; flex-direction: column; gap: 12px; }
+
+    /* ── Resize handle ── */
+    #resize-handle {
+      position: absolute; bottom: 3px; right: 3px;
+      width: 12px; height: 12px;
+      cursor: nwse-resize;
+      opacity: .3;
+      background: linear-gradient(135deg, transparent 40%, #8b949e 40%, #8b949e 55%, transparent 55%, transparent 70%, #8b949e 70%, #8b949e 85%, transparent 85%);
+    }
+    #resize-handle:hover { opacity: .7; }
 
     /* ── Color card ── */
     .ccard {
       border-radius: 8px; border: 1px solid var(--border);
       background: var(--bg); overflow: hidden;
+      flex-shrink: 0;
     }
     .ccard-hdr {
       padding: 7px 12px;
       display: flex; align-items: center; gap: 8px;
       border-bottom: 1px solid var(--border);
+      cursor: pointer; user-select: none;
     }
+    .ccard-hdr:hover { background: rgba(255,255,255,.03); }
+    .ccard.collapsed .ccard-hdr { border-bottom: none; }
+    .ccard.collapsed .col { display: none; }
+    .chevron { font-size: 10px; color: #8b949e; flex-shrink: 0; transition: transform .15s; }
+    .ccard.collapsed .chevron { transform: rotate(-90deg); }
     .cbadge {
       font-weight: 700; font-size: 12px;
       padding: 2px 10px; border-radius: 8px;
@@ -582,12 +605,15 @@
       +     '<option value="8" selected>8</option>'
       +   '</select>'
       +   '<span>gems per colour</span>'
-      + '</div></div>'
+      + '</div>'
+      + '<span id="font-badge" title="Prices shown are for level 1, 0% quality gems — the raw output of the Divine Font">&#x2697; lvl\u00a01 \u00b7 q\u00a00%</span>'
+      + '</div>'
       + '<div id="status" class="load">Loading\u2026</div>'
       + '<div id="body"></div>'
       + '<div id="footer">'
       +   '<a href="https://buymeacoffee.com/lebedevsd" target="_blank" rel="noopener">&#x2615; Buy me a coffee</a>'
       + '</div>'
+      + '<div id="resize-handle"></div>'
       + '</div>';
     shadow.appendChild(tpl.content);
 
@@ -633,6 +659,7 @@
     return `
       <div class="ccard" style="--accent:${m.accent};--bg:${m.bg};--border:${m.border}">
         <div class="ccard-hdr">
+          <span class="chevron">&#x25BE;</span>
           <span class="cbadge">${m.label}</span>
           <span class="ccard-title" title="${escHtml(hitTitle)}">Transfigured Gems</span>
           <span class="pool-ev">EV: <strong>${fmtC(poolEv)}</strong> · ${poolSize} gems · <strong>${hitChance}</strong> each</span>
@@ -667,8 +694,9 @@
     return `
       <div class="ccard" style="--accent:#e6b450;--bg:rgba(230,180,80,.06);--border:rgba(230,180,80,.25)">
         <div class="ccard-hdr">
+          <span class="chevron">&#x25BE;</span>
           <span class="cbadge" style="background:#e6b450;color:#0d1117">Best</span>
-          <span class="ccard-title" style="color:#e6b450">Best Specific Gems (all colours · by EV)</span>
+          <span class="ccard-title" style="color:#e6b450">Best Specific Gems (all colours · by best variant)</span>
         </div>
         <div class="col">${rows}</div>
       </div>`;
@@ -689,6 +717,11 @@
     if (!html) html = '<div class="empty">No transfigured gem data found for this league.</div>';
 
     setHTML(body, html);
+
+    // Wire collapse toggle on each card header
+    body.querySelectorAll('.ccard-hdr').forEach(hdr => {
+      hdr.addEventListener('click', () => hdr.closest('.ccard').classList.toggle('collapsed'));
+    });
 
     status.className = '';
     status.textContent = `${results.totalTransfig} transfigured gems (static) · ${results.totalLines} API entries`;
@@ -715,6 +748,28 @@
     });
   }
 
+  // ─── Resize ───────────────────────────────────────────────────────────────
+  function makeResizable(shadow) {
+    const panel  = shadow.getElementById('panel');
+    const handle = shadow.getElementById('resize-handle');
+    handle.addEventListener('mousedown', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const startX = e.clientX, startY = e.clientY;
+      const startW = panel.offsetWidth, startH = panel.offsetHeight;
+      const onMove = ev => {
+        panel.style.width     = Math.max(360, startW + ev.clientX - startX) + 'px';
+        panel.style.maxHeight = Math.max(200, startH + ev.clientY - startY) + 'px';
+      };
+      const onUp = () => {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup',  onUp);
+      };
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup',  onUp);
+    });
+  }
+
   // ─── Main ─────────────────────────────────────────────────────────────────
   async function init() {
     document.getElementById('gemcheck-host')?.remove();
@@ -722,6 +777,7 @@
     const league = leagueFromUrl();
     const { host, shadow } = buildPanel(league);
     makeDraggable(host, shadow.getElementById('hdr'));
+    makeResizable(shadow);
 
     const status = shadow.getElementById('status');
     let topN = 8;

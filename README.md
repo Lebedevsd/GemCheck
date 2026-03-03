@@ -41,7 +41,9 @@ GemCheck calculates the **expected value (EV)** and **hit probabilities** for bo
 ### From Firefox Add-ons *(under review)*
 The Firefox add-on has been submitted and is currently under review by Mozilla.
 
-### From a GitHub Release — Chrome
+### From a GitHub Release — Chrome / Chromium
+Works with any Chromium-based browser: **Chrome, Brave, Opera GX, Vivaldi, Edge**.
+
 1. Go to the [Releases](../../releases) page and download `gemcheck.zip`.
 2. Unzip it — you'll get a folder with `manifest.json`, `src/`, and `assets/`.
 3. Open Chrome and go to `chrome://extensions`.
