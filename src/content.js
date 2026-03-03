@@ -311,6 +311,7 @@
       // Group by base name
       const byBase = {};
       names.forEach(name => {
+        if (name.endsWith('of Trarthus')) return; // Trathan gems — different mechanic
         const i = name.lastIndexOf(' of ');
         const baseName = name.slice(0, i);
         if (!byBase[baseName]) byBase[baseName] = [];
@@ -347,7 +348,7 @@
     const colorStats = {};
 
     for (const c of ['r', 'g', 'b']) {
-      const poolGems = TRANSFIG_GEMS[c].map(name => ({
+      const poolGems = TRANSFIG_GEMS[c].filter(name => !name.endsWith('of Trarthus')).map(name => ({
         name,
         sellPrice: priceMap[name]?.sellPrice || 0,
         count:     priceMap[name]?.count     || 0,

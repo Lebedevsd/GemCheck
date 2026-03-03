@@ -64,7 +64,9 @@ def extract_gems_from_table(table_html):
             if href.startswith("File:") or href.startswith("Special:"):
                 continue
             name = text.strip()
-            if name and name == title.strip() and name not in gems:
+            # Exclude Trathan gems ("of Trarthus" suffix) — separate mechanic
+            if name and name == title.strip() and name not in gems \
+                    and not name.endswith('of Trarthus'):
                 gems.append(name)
                 break
 

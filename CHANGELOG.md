@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4] – 2026-03-03
+
+### Fixed
+- **Trathan gems excluded** — gems with "of Trarthus" suffix (a separate Divine Font mechanic) are now filtered out from both the color roll pool and specific gems section; scraper also guards against picking them up from poewiki in future runs
+
+---
+
 ## [1.0.3] – 2026-03-03
 
 ### Added
