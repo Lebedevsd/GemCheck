@@ -2,7 +2,10 @@
 
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-donate-yellow?logo=buy-me-a-coffee)](https://buymeacoffee.com/lebedevsd)
 
-A Chrome extension that overlays a floating panel on [poe.ninja](https://poe.ninja) and calculates which transfigured gems are most profitable to farm at the **Labyrinth Divine Font** in Path of Exile.
+A browser extension that overlays a floating panel on [poe.ninja](https://poe.ninja) and helps you make profitable decisions at two endgame crafting mechanics in Path of Exile:
+
+- **Labyrinth Divine Font** — which transfigured gems to hunt
+- **Harvest crafting** — whether to swap Catalysts, Essences, or Delirium Orbs for profit
 
 ![GemCheck panel screenshot](assets/screenshot_store.png)
 
@@ -17,19 +20,38 @@ The Divine Font offers two ways to transfigure a gem:
 
 GemCheck calculates the **expected value (EV)** and **hit probabilities** for both modes using live poe.ninja pricing so you can make informed decisions before running the lab.
 
+## How Harvest Swap works
+
+The Harvest crafting bench lets you **swap** a currency item (Catalyst, Essence, or Delirium Orb) for a random item of the same type. The swap costs Crystallised Lifeforce.
+
+GemCheck shows:
+- **Pool EV** — the weighted average sell price across all possible outcomes
+- **Craft threshold** — pool EV minus craft cost; items priced below this are worth sacrificing for a reroll
+- **▲ keep / ▼ craft** — per-item indicators showing whether to hold or swap
+
+Drop probabilities for Catalysts and Delirium Orbs are based on ~2000 observed swaps by [lifewithoutpants_](https://www.youtube.com/@lifewithoutpants_) (YouTube).
+
 ---
 
 ## Features
 
+### Divine Font (Skill Gems page)
 - **Color Roll Bingo** — for each colour (Red / Green / Blue) shows the top target gems with pool EV, hit probability per gem, and current sell price.
 - **Best Specific Gems** — a combined cross-colour ranking of all base gems sorted by EV, with every variant's probability and sell price listed.
+- **Configurable Top N** — choose how many gems to show per section (3 / 5 / 8).
+
+### Harvest Swap (Currency / Essences / Delirium Orbs pages)
+- **Catalysts** — weighted EV with observed drop probabilities; excludes Dextral, Sinistral, and Tainted Catalysts (different mechanic).
+- **Essences** — EV for Deafening Essence swaps.
+- **Delirium Orbs** — weighted EV with observed drop probabilities.
+- **▲ keep / ▼ craft indicators** — tells you at a glance which items are worth sacrificing.
+
+### General
 - **Live pricing** — pulls directly from poe.ninja's public API for the current league. Data is cached for 5 minutes; a Refresh button busts the cache.
 - **League auto-detection** — reads the league from the poe.ninja URL automatically.
 - **Draggable panel** — reposition anywhere on screen; minimise or close when not needed.
-- **Configurable Top N** — choose how many gems to show per section (3 / 5 / 8).
 
-> Prices shown are raw sell prices (cheapest non-corrupted listing on poe.ninja).
-> Base gem cost and lab fees are not deducted.
+> Prices shown are raw sell prices (cheapest listing on poe.ninja). Craft cost uses live Crystallised Lifeforce prices. Base gem cost and lab fees are not deducted.
 
 ---
 
@@ -63,11 +85,19 @@ Works with any Chromium-based browser: **Chrome, Brave, Opera GX, Vivaldi, Edge*
 
 ## Usage
 
-1. Go to **poe.ninja** and open the Skill Gems page for your league.
-2. The GemCheck panel appears in the top-right corner.
-3. Use the **Top N** selector to control how many gems are shown.
-4. Click **Refresh** to fetch the latest prices.
-5. Drag the panel anywhere on screen; click **—** to minimise or **✕** to close.
+The panel appears automatically on the relevant poe.ninja pages.
+
+**Divine Font (Skill Gems):**
+1. Go to `poe.ninja › Economy › [your league] › Skill Gems`.
+2. Use the **Top N** selector to control how many gems are shown per colour.
+
+**Harvest Swap (Catalysts / Essences / Deli Orbs):**
+1. Go to `poe.ninja › Economy › [your league] › Currency` (Catalysts), `Essences`, or `Delirium Orbs`.
+2. Items marked **▲** are worth holding; items marked **▼** are worth sacrificing for a reroll.
+
+**General:**
+- Click **Refresh** to fetch the latest prices.
+- Drag the panel anywhere on screen; click **—** to minimise or **✕** to close.
 
 ---
 
@@ -116,6 +146,9 @@ This scrapes poewiki for the latest base gem and transfigured gem lists, updates
 
 - **Gem prices** — [poe.ninja](https://poe.ninja) public API (`/api/data/itemoverview?type=SkillGem`)
 - **Gem colour data** — [poewiki.net/wiki/List_of_skill_gems](https://www.poewiki.net/wiki/List_of_skill_gems)
+- **Catalyst / Deli Orb prices** — poe.ninja exchange API (`/api/economy/exchange/current/overview`)
+- **Essence / Delirium Orb prices** — poe.ninja item API (`/api/data/itemoverview`)
+- **Catalyst & Deli Orb drop weights** — ~2000 observed swaps by [lifewithoutpants_](https://www.youtube.com/@lifewithoutpants_) (YouTube)
 
 ---
 

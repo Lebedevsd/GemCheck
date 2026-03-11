@@ -2,7 +2,17 @@
 (function () {
   'use strict';
 
-  if (!location.pathname.includes('skill-gems')) return;
+  function tabFromUrl() {
+    const p = location.pathname;
+    if (p.includes('skill-gems'))    return 'gems';
+    if (p.includes('delirium-orbs')) return 'delirium';
+    if (p.includes('fossils'))       return 'fossils';
+    if (p.includes('currency')) return 'catalysts';
+    if (p.includes('essences'))      return 'essences';
+    return null;
+  }
+
+  if (!tabFromUrl()) return;
 
   // ─── Gem color lookup (base gem name → 'r' | 'g' | 'b') ──────────────────
   // Source: poewiki.net/wiki/List_of_skill_gems (via gem_colors.json)
@@ -12,17 +22,18 @@
     'Autoexertion': 'r',     'Berserk': 'r',     'Bladestorm': 'r',     'Blood and Sand': 'r',
     'Boneshatter': 'r',     'Chain Hook': 'r',     'Cleave': 'r',     'Consecrated Path': 'r',
     'Corrupting Fever': 'r',     'Crushing Fist': 'r',     'Decoy Totem': 'r',     'Defiance Banner': 'r',
-    'Determination': 'r',     'Devouring Totem': 'r',     'Dominating Blow': 'r',     'Dread Banner': 'r',
-    'Earthquake': 'r',     'Earthshatter': 'r',     'Enduring Cry': 'r',     'Eviscerate': 'r',
-    'Exsanguinate': 'r',     'Flame Link': 'r',     'Flesh and Stone': 'r',     'Frozen Legion': 'r',
-    'Glacial Hammer': 'r',     'Ground Slam': 'r',     'Heavy Strike': 'r',     'Herald of Ash': 'r',
-    'Herald of Purity': 'r',     'Holy Flame Totem': 'r',     'Holy Sweep': 'r',     'Ice Crash': 'r',
-    'Immortal Call': 'r',     'Infernal Blow': 'r',     'Infernal Cry': 'r',     'Intimidating Cry': 'r',
-    'Leap Slam': 'r',     'Molten Shell': 'r',     'Molten Strike': 'r',     'Perforate': 'r',
-    'Petrified Blood': 'r',     'Pride': 'r',     'Protective Link': 'r',     'Punishment': 'r',
-    'Purity of Fire': 'r',     'Rage Vortex': 'r',     'Rallying Cry': 'r',     'Reap': 'r',
-    'Rejuvenation Totem': 'r',     'Searing Bond': 'r',     'Seismic Cry': 'r',     'Shield Charge': 'r',
-    'Shield Crush': 'r',     'Shockwave Totem': 'r',     'Smite': 'r',     'Static Strike': 'r',
+    'Determination': 'r',     'Devouring Totem': 'r',     'Divine Blast': 'r',     'Dominating Blow': 'r',
+    'Dread Banner': 'r',     'Earthquake': 'r',     'Earthshatter': 'r',     'Enduring Cry': 'r',
+    'Eviscerate': 'r',     'Exsanguinate': 'r',     'Flame Link': 'r',     'Flesh and Stone': 'r',
+    'Frozen Legion': 'r',     'Glacial Hammer': 'r',     'Ground Slam': 'r',     'Heavy Strike': 'r',
+    'Herald of Ash': 'r',     'Herald of Purity': 'r',     'Holy Flame Totem': 'r',     'Holy Hammers': 'r',
+    'Holy Strike': 'r',     'Holy Sweep': 'r',     'Ice Crash': 'r',     'Immortal Call': 'r',
+    'Infernal Blow': 'r',     'Infernal Cry': 'r',     'Intimidating Cry': 'r',     'Leap Slam': 'r',
+    'Molten Shell': 'r',     'Molten Strike': 'r',     'Perforate': 'r',     'Petrified Blood': 'r',
+    'Pride': 'r',     'Protective Link': 'r',     'Punishment': 'r',     'Purity of Fire': 'r',
+    'Rage Vortex': 'r',     'Rallying Cry': 'r',     'Reap': 'r',     'Rejuvenation Totem': 'r',
+    'Searing Bond': 'r',     'Seismic Cry': 'r',     'Shield Charge': 'r',     'Shield Crush': 'r',
+    'Shield of Light': 'r',     'Shockwave Totem': 'r',     'Smite': 'r',     'Static Strike': 'r',
     'Steelskin': 'r',     'Summon Flame Golem': 'r',     'Summon Stone Golem': 'r',     'Sunder': 'r',
     'Swordstorm': 'r',     'Tectonic Slam': 'r',     'Vengeful Cry': 'r',     'Vigilant Strike': 'r',
     'Vitality': 'r',     'Volcanic Fissure': 'r',     'Vulnerability': 'r',     'War Banner': 'r',
@@ -94,8 +105,9 @@
       'Frozen Legion of Rallying','Glacial Hammer of Shattering','Ground Slam of Earthshaking',
       'Holy Flame Totem of Ire','Ice Crash of Cadence','Infernal Blow of Immolation',
       'Leap Slam of Groundbreaking','Molten Strike of the Zenith','Perforate of Bloodshed',
-      'Perforate of Duality','Rage Vortex of Berserking','Shield Crush of the Chieftain',
-      'Smite of Divine Judgement','Summon Flame Golem of Hordes','Summon Flame Golem of the Meteor',
+      'Perforate of Duality','Rage Vortex of Berserking','Searing Bond of Detonation',
+      'Shield Crush of the Chieftain','Shockwave Totem of Authority','Smite of Divine Judgement',
+      'Static Strike of Gathering Lightning','Summon Flame Golem of Hordes','Summon Flame Golem of the Meteor',
       'Summon Stone Golem of Hordes','Summon Stone Golem of Safeguarding','Sunder of Earthbreaking',
       'Tectonic Slam of Cataclysm','Volcanic Fissure of Snaking',
     ],
@@ -106,25 +118,25 @@
       'Blade Trap of Greatswords','Blade Trap of Laceration','Blade Vortex of the Scythe',
       'Bladefall of Impaling','Bladefall of Volleys','Blink Arrow of Bombarding Clones',
       'Blink Arrow of Prismatic Clones','Burning Arrow of Vigour','Caustic Arrow of Poison',
-      'Cremation of Exhuming','Cremation of the Volcano','Cyclone of Tumult',
-      'Detonate Dead of Chain Reaction','Detonate Dead of Scavenging','Double Strike of Impaling',
-      'Double Strike of Momentum','Dual Strike of Ambidexterity','Elemental Hit of the Spectrum',
-      'Ethereal Knives of Lingering Blades','Ethereal Knives of the Massacre','Explosive Concoction of Destruction',
-      'Explosive Trap of Magnitude','Explosive Trap of Shrapnel','Fire Trap of Blasting',
-      'Flicker Strike of Power','Frenzy of Onslaught','Frost Blades of Katabasis',
-      'Galvanic Arrow of Energy','Galvanic Arrow of Surging','Ice Shot of Penetration',
-      'Ice Trap of Hollowness','Lacerate of Butchering','Lacerate of Haemorrhage',
-      'Lancing Steel of Spraying','Lightning Arrow of Electrocution','Lightning Strike of Arcing',
-      'Mirror Arrow of Bombarding Clones','Mirror Arrow of Prismatic Clones','Poisonous Concoction of Bouncing',
-      'Puncture of Shanking','Rain of Arrows of Artillery','Rain of Arrows of Saturation',
-      'Reave of Refraction','Scourge Arrow of Menace','Seismic Trap of Swells',
-      'Shattering Steel of Ammunition','Shrapnel Ballista of Steel','Siege Ballista of Splintering',
-      'Spectral Shield Throw of Shattering','Spectral Throw of Materialising','Split Arrow of Splitting',
-      'Splitting Steel of Ammunition','Storm Rain of the Conduit','Storm Rain of the Fence',
-      'Summon Ice Golem of Hordes','Summon Ice Golem of Shattering','Tornado Shot of Cloudburst',
-      'Tornado of Elemental Turbulence','Toxic Rain of Sporeburst','Toxic Rain of Withering',
-      'Viper Strike of the Mamba','Volatile Dead of Confinement','Volatile Dead of Seething',
-      'Wild Strike of Extremes',
+      'Charged Dash of Projection','Cremation of Exhuming','Cremation of the Volcano',
+      'Cyclone of Tumult','Detonate Dead of Chain Reaction','Detonate Dead of Scavenging',
+      'Double Strike of Impaling','Double Strike of Momentum','Dual Strike of Ambidexterity',
+      'Elemental Hit of the Spectrum','Ethereal Knives of Lingering Blades','Ethereal Knives of the Massacre',
+      'Explosive Concoction of Destruction','Explosive Trap of Magnitude','Explosive Trap of Shrapnel',
+      'Fire Trap of Blasting','Flamethrower Trap of Stability','Flicker Strike of Power',
+      'Frenzy of Onslaught','Frost Blades of Katabasis','Galvanic Arrow of Energy',
+      'Galvanic Arrow of Surging','Ice Shot of Penetration','Ice Trap of Hollowness',
+      'Lacerate of Butchering','Lacerate of Haemorrhage','Lancing Steel of Spraying',
+      'Lightning Arrow of Electrocution','Lightning Strike of Arcing','Mirror Arrow of Bombarding Clones',
+      'Mirror Arrow of Prismatic Clones','Poisonous Concoction of Bouncing','Puncture of Shanking',
+      'Rain of Arrows of Artillery','Rain of Arrows of Saturation','Reave of Refraction',
+      'Scourge Arrow of Menace','Seismic Trap of Swells','Shattering Steel of Ammunition',
+      'Shrapnel Ballista of Steel','Siege Ballista of Splintering','Spectral Shield Throw of Shattering',
+      'Spectral Throw of Materialising','Split Arrow of Splitting','Splitting Steel of Ammunition',
+      'Storm Rain of the Conduit','Storm Rain of the Fence','Summon Ice Golem of Hordes',
+      'Summon Ice Golem of Shattering','Tornado Shot of Cloudburst','Tornado of Elemental Turbulence',
+      'Toxic Rain of Sporeburst','Toxic Rain of Withering','Viper Strike of the Mamba',
+      'Volatile Dead of Confinement','Volatile Dead of Seething','Wild Strike of Extremes',
     ],
     b: [
       'Arc of Oscillating','Arc of Surging','Armageddon Brand of Recall',
@@ -132,30 +144,76 @@
       'Bane of Condemnation','Blight of Atrophy','Blight of Contagion',
       'Bodyswap of Sacrifice','Cold Snap of Power','Contagion of Subsiding',
       'Contagion of Transference','Crackling Lance of Branching','Crackling Lance of Disintegration',
-      'Discharge of Misery','Divine Ire of Disintegration','Divine Ire of Holy Lightning',
-      'Essence Drain of Desperation','Essence Drain of Wickedness','Eye of Winter of Finality',
-      'Eye of Winter of Transience','Firestorm of Meteors','Firestorm of Pelting',
-      'Flame Dash of Return','Flame Surge of Combusting','Flameblast of Celerity',
-      'Flameblast of Contraction','Forbidden Rite of Soul Sacrifice','Frost Bomb of Forthcoming',
-      'Frost Bomb of Instability','Frostblink of Wintry Blast','Galvanic Field of Intensity',
-      'Glacial Cascade of the Fissure','Hexblast of Contradiction','Hexblast of Havoc',
-      'Ice Nova of Deep Freeze','Ice Nova of Frostbolts','Ice Spear of Splitting',
-      'Icicle Mine of Fanning','Icicle Mine of Sabotage','Incinerate of Expanse',
-      'Incinerate of Venting','Kinetic Blast of Clustering','Kinetic Bolt of Fragmentation',
-      'Kinetic Rain of Impact','Lightning Conduit of the Heavens','Lightning Spire Trap of Overloading',
-      'Lightning Spire Trap of Zapping','Lightning Tendrils of Eccentricity','Lightning Tendrils of Escalation',
-      'Lightning Trap of Sparking','Penance Brand of Conduction','Penance Brand of Dissipation',
+      'Creeping Frost of Floes','Discharge of Misery','Divine Ire of Disintegration',
+      'Divine Ire of Holy Lightning','Essence Drain of Desperation','Essence Drain of Wickedness',
+      'Eye of Winter of Finality','Eye of Winter of Transience','Firestorm of Meteors',
+      'Firestorm of Pelting','Flame Dash of Return','Flame Surge of Combusting',
+      'Flameblast of Celerity','Flameblast of Contraction','Forbidden Rite of Soul Sacrifice',
+      'Frost Bomb of Forthcoming','Frost Bomb of Instability','Frostblink of Wintry Blast',
+      'Galvanic Field of Intensity','Glacial Cascade of the Fissure','Hexblast of Contradiction',
+      'Hexblast of Havoc','Ice Nova of Deep Freeze','Ice Nova of Frostbolts',
+      'Ice Spear of Splitting','Icicle Mine of Fanning','Icicle Mine of Sabotage',
+      'Incinerate of Expanse','Incinerate of Venting','Kinetic Blast of Clustering',
+      'Kinetic Bolt of Fragmentation','Kinetic Fusillade of Detonation','Kinetic Rain of Impact',
+      'Lightning Conduit of the Heavens','Lightning Spire Trap of Overloading','Lightning Spire Trap of Zapping',
+      'Lightning Tendrils of Eccentricity','Lightning Tendrils of Escalation','Lightning Trap of Sparking',
+      'Orb of Storms of Squalls','Penance Brand of Conduction','Penance Brand of Dissipation',
       'Power Siphon of the Archmage','Purifying Flame of Revelations','Pyroclast Mine of Sabotage',
       'Raise Spectre of Transience','Raise Zombie of Falling','Raise Zombie of Slamming',
-      'Righteous Fire of Arcane Devotion','Scorching Ray of Immolation','Soulrend of Reaping',
-      'Soulrend of the Spiral','Spark of Unpredictability','Spark of the Nova',
-      'Storm Brand of Indecision','Stormbind of Teleportation','Summon Carrion Golem of Hordes',
+      'Righteous Fire of Arcane Devotion','Scorching Ray of Immolation','Shock Nova of Procession',
+      'Siphoning Trap of Pain','Soulrend of Reaping','Soulrend of the Spiral',
+      'Spark of Unpredictability','Spark of the Nova','Storm Brand of Indecision',
+      'Storm Burst of Repulsion','Stormbind of Teleportation','Summon Carrion Golem of Hordes',
       'Summon Carrion Golem of Scavenging','Summon Chaos Golem of Hordes','Summon Chaos Golem of the Maelström',
       'Summon Holy Relic of Conviction','Summon Lightning Golem of Hordes','Summon Raging Spirit of Enormity',
       'Summon Reaper of Eviscerating','Summon Reaper of Revenants','Summon Skeletons of Archers',
       'Summon Skeletons of Mages','Void Sphere of Rending','Vortex of Projection',
     ],
   };
+
+  // ─── Harvest crafting config ──────────────────────────────────────────────
+  const HARVEST_TABS = {
+    fossils:   { label: 'Fossils',   type: 'Fossil',      lifeforce: 'Wild Crystallised Lifeforce',   cost: 30 },
+    // oils: hidden for now
+    catalysts: { label: 'Catalysts', type: 'Currency',    lifeforce: 'Vivid Crystallised Lifeforce',  cost: 30, useExchange: true,
+                 nameFilter: n => n.includes('Catalyst'),
+                 exclude: new Set(['Dextral Catalyst', 'Sinistral Catalyst', 'Tainted Catalyst']),
+                 showProb: true,
+                 // Observed drop rates from 2000-swap experiment
+                 weights: {
+                   'Intrinsic Catalyst':    0.2425,
+                   'Imbued Catalyst':       0.1505,
+                   'Noxious Catalyst':      0.1485,
+                   'Turbulent Catalyst':    0.1480,
+                   'Abrasive Catalyst':     0.1460,
+                   'Prismatic Catalyst':    0.0455,
+                   'Fertile Catalyst':      0.0440,
+                   'Tempering Catalyst':    0.0415,
+                   'Accelerating Catalyst': 0.0175,
+                   'Unstable Catalyst':     0.0160,
+                 } },
+    essences:  { label: 'Essences',  type: 'Essence',     lifeforce: 'Primal Crystallised Lifeforce', cost: 30, useExchange: true },
+    delirium:  { label: 'Deli Orbs', type: 'DeliriumOrb', lifeforce: 'Primal Crystallised Lifeforce', cost: 30, useExchange: true, showProb: true,
+                 // Observed drop rates from ~1955-swap experiment, normalised to orbs present on poe.ninja
+                 // (Foreboding, Imperial, Fossilised, Amorphous, Obscured excluded — not on exchange)
+                 weights: {
+                   "Jeweller's Delirium Orb":     0.1497,
+                   "Armoursmith's Delirium Orb":  0.1386,
+                   'Fine Delirium Orb':           0.1367,
+                   "Blacksmith's Delirium Orb":   0.1224,
+                   'Whispering Delirium Orb':     0.0680,
+                   "Diviner's Delirium Orb":      0.0588,
+                   'Fragmented Delirium Orb':     0.0482,
+                   "Cartographer's Delirium Orb": 0.0452,
+                   "Thaumaturge's Delirium Orb":  0.0452,
+                   'Timeless Delirium Orb':       0.0427,
+                   'Skittering Delirium Orb':     0.0402,
+                   'Blighted Delirium Orb':       0.0396,
+                   'Abyssal Delirium Orb':        0.0365,
+                   'Singular Delirium Orb':       0.0285,
+                 } },
+  };
+  const HIGH_ESSENCE_TIERS = new Set(['Deafening']);
 
   // ─── Helpers ──────────────────────────────────────────────────────────────
   const COLOR_META = {
@@ -184,8 +242,10 @@
   }
 
   // ─── API ──────────────────────────────────────────────────────────────────
-  const API = 'https://poe.ninja/api/data/itemoverview';
-  let _cache = null, _cacheLeague = '', _cacheTime = 0;
+  const ITEM_API     = 'https://poe.ninja/api/data/itemoverview';
+  const CURR_API     = 'https://poe.ninja/api/data/currencyoverview';
+  const EXCHANGE_API = 'https://poe.ninja/poe1/api/economy/exchange/current/overview';
+  const _caches = {}, _cacheTimes = {}, _cacheLeagues = {};
   const CACHE_TTL = 5 * 60 * 1000;
 
   // Intercept poe.ninja's own fetch calls from the page context so we discover
@@ -193,6 +253,7 @@
   // page world, so we inject a <script> tag to bridge that gap).
   let _interceptResolve = null;
   const _interceptPromise = new Promise(res => { _interceptResolve = res; });
+  const _exchangeResolvers = {}; // type → resolve fn
 
   function injectInterceptor() {
     const s = document.createElement('script');
@@ -204,7 +265,9 @@
         var url = typeof resource === 'string' ? resource
                 : (resource instanceof URL ? resource.href : (resource && resource.url) || '');
         var result = _orig(resource, opts);
-        if (url.indexOf('itemoverview') !== -1 && url.indexOf('SkillGem') !== -1) {
+        var isGem      = url.indexOf('itemoverview') !== -1 && url.indexOf('SkillGem') !== -1;
+        var isExchange = url.indexOf('exchange/current/overview') !== -1;
+        if (isGem || isExchange) {
           result.then(function(r){ return r.clone().json(); })
                 .then(function(d){ window.postMessage({__gc: 1, url: url, data: d}, '*'); })
                 .catch(function(){});
@@ -217,12 +280,23 @@
 
     window.addEventListener('message', function(e) {
       if (!e.data || !e.data.__gc) return;
-      console.log('[GemCheck] intercepted poe.ninja API call:', e.data.url,
-                  '→ lines:', e.data.data && e.data.data.lines ? e.data.data.lines.length : 'no lines');
-      if (e.data.data && e.data.data.lines && e.data.data.lines.length > 0) {
-        _cache     = e.data.data;
-        _cacheTime = Date.now();
-        if (_interceptResolve) { _interceptResolve(e.data.data); _interceptResolve = null; }
+      const data = e.data.data;
+      const url  = e.data.url || '';
+      console.log('[GemCheck] intercepted:', url, '→ lines:', data && data.lines ? data.lines.length : 'no lines');
+      if (!data || !data.lines || !data.lines.length) return;
+      const league = leagueFromUrl();
+      const now    = Date.now();
+      if (url.indexOf('exchange/current/overview') !== -1) {
+        // extract type from URL query string
+        const m = url.match(/[?&]type=([^&]+)/);
+        const t = m ? m[1] : 'unknown';
+        const key = 'exchange-' + t + '-' + league;
+        _caches[key] = data; _cacheTimes[key] = now; _cacheLeagues[key] = league;
+        if (_exchangeResolvers[t]) { _exchangeResolvers[t](data); delete _exchangeResolvers[t]; }
+      } else {
+        const key = 'SkillGem-' + league;
+        _caches[key] = data; _cacheTimes[key] = now; _cacheLeagues[key] = league;
+        if (_interceptResolve) { _interceptResolve(data); _interceptResolve = null; }
       }
     });
   }
@@ -244,19 +318,24 @@
     return prefix + cap(name);
   }
 
-  async function fetchGems(league) {
+  async function fetchItems(league, type) {
+    const key = `${type}-${league}`;
     const now = Date.now();
-    if (_cache && _cacheLeague === league && now - _cacheTime < CACHE_TTL) return _cache;
+    if (_caches[key] && _cacheLeagues[key] === league && now - (_cacheTimes[key] || 0) < CACHE_TTL) {
+      return _caches[key];
+    }
 
-    // poe.ninja added PoE2 support and likely changed their API.
-    // Try variants: with/without game=poe1, capitalised/lower league name.
     const normalized = normalizeLeague(league);
-    const variants = [
-      `${API}?league=${encodeURIComponent(normalized)}&type=SkillGem&game=poe1`,
-      `${API}?league=${encodeURIComponent(cap(league))}&type=SkillGem&game=poe1`,
-      `${API}?league=${encodeURIComponent(normalized)}&type=SkillGem`,
-      `${API}?league=${encodeURIComponent(cap(league))}&type=SkillGem`,
+    const isCurrency = (type === 'Currency');
+    const endpoint = isCurrency ? CURR_API : ITEM_API;
+    const rawVariants = [
+      `${endpoint}?league=${encodeURIComponent(normalized)}&type=${type}&game=poe1`,
+      `${endpoint}?league=${encodeURIComponent(cap(league))}&type=${type}&game=poe1`,
+      `${endpoint}?league=${encodeURIComponent(normalized)}&type=${type}`,
+      `${endpoint}?league=${encodeURIComponent(cap(league))}&type=${type}`,
     ];
+    // deduplicate
+    const variants = [...new Set(rawVariants)];
 
     for (const url of variants) {
       console.log('[GemCheck] trying:', url);
@@ -264,9 +343,10 @@
         const r = await fetch(url);
         if (!r.ok) { console.warn('[GemCheck]', url, '→ HTTP', r.status); continue; }
         const data = await r.json();
-        console.log('[GemCheck]', url, '→ lines:', data.lines?.length ?? 'no lines key');
-        if (data.lines?.length > 0) {
-          _cache = data; _cacheLeague = league; _cacheTime = now;
+        const lines = data.lines || [];
+        console.log('[GemCheck]', url, '→ lines:', lines.length);
+        if (lines.length > 0) {
+          _caches[key] = data; _cacheTimes[key] = now; _cacheLeagues[key] = league;
           return data;
         }
       } catch (err) {
@@ -274,16 +354,69 @@
       }
     }
 
-    // Last resort: wait up to 8 s for the interceptor to catch poe.ninja's own call
-    console.log('[GemCheck] all direct attempts empty – waiting for page intercept…');
-    const raceResult = await Promise.race([
-      _interceptPromise,
-      new Promise((_, rej) => setTimeout(() => rej(new Error(
-        'No data from any endpoint. Open DevTools → Network, filter "itemoverview", reload page and check the exact URL poe.ninja uses.'
-      )), 8000)),
-    ]);
-    _cacheLeague = league;
-    return raceResult;
+    // For SkillGem: last resort — wait for page intercept
+    if (type === 'SkillGem') {
+      console.log('[GemCheck] all direct attempts empty – waiting for page intercept…');
+      const raceResult = await Promise.race([
+        _interceptPromise,
+        new Promise((_, rej) => setTimeout(() => rej(new Error(
+          'No data from any endpoint. Open DevTools → Network, filter "itemoverview", reload page and check the exact URL poe.ninja uses.'
+        )), 8000)),
+      ]);
+      _caches[key] = raceResult; _cacheLeagues[key] = league;
+      return raceResult;
+    }
+
+    throw new Error(`No data returned for ${type} / ${league}`);
+  }
+
+  async function fetchLifeforce(league) {
+    const data = await fetchItems(league, 'Currency');
+    const prices = {}, icons = {};
+    for (const line of (data.lines || [])) {
+      const name = line.currencyTypeName || line.name || '';
+      if (name.includes('Crystallised Lifeforce')) {
+        prices[name] = line.chaosEquivalent || line.chaosValue || 0;
+      }
+    }
+    for (const detail of (data.currencyDetails || [])) {
+      if (detail.name && detail.icon) icons[detail.name] = detail.icon;
+    }
+    return { prices, icons };
+  }
+
+  async function fetchExchange(league, type) {
+    const key = `exchange-${type}-${league}`;
+    const now = Date.now();
+    if (_caches[key] && _cacheLeagues[key] === league && now - (_cacheTimes[key] || 0) < CACHE_TTL) {
+      return _caches[key];
+    }
+    const normalized = normalizeLeague(league);
+    const urls = [...new Set([
+      `${EXCHANGE_API}?league=${encodeURIComponent(normalized)}&type=${type}`,
+      `${EXCHANGE_API}?league=${encodeURIComponent(cap(league))}&type=${type}`,
+    ])];
+    for (const url of urls) {
+      console.log('[GemCheck] exchange trying:', url);
+      try {
+        const r = await fetch(url, { credentials: 'include' });
+        if (!r.ok) { console.warn('[GemCheck] exchange', url, '→ HTTP', r.status); continue; }
+        const data = await r.json();
+        if ((data.lines || []).length > 0) {
+          _caches[key] = data; _cacheTimes[key] = now; _cacheLeagues[key] = league;
+          return data;
+        }
+      } catch (err) { console.warn('[GemCheck] exchange fetch error:', err.message); }
+    }
+
+    // Exchange API unavailable — fall back to itemoverview
+    console.warn('[GemCheck] exchange API unavailable, falling back to itemoverview for', type);
+    return fetchItems(league, type);
+  }
+
+  function bustCache(league, type) {
+    const key = `${type}-${league}`;
+    delete _caches[key]; delete _cacheTimes[key]; delete _cacheLeagues[key];
   }
 
   // ─── Data Processing ──────────────────────────────────────────────────────
@@ -384,6 +517,97 @@
     return { colorStats, gemPicks, totalLines: lines.length, totalTransfig };
   }
 
+  // ─── Harvest Processing ───────────────────────────────────────────────────
+
+  // The exchange API returns {items: [{id,name,image,...}], lines: [{id,primaryValue,...}]}
+  // Merge them into {lines: [{name,icon,primaryValue}]} for uniform processing.
+  function normalizeExchangeData(data) {
+    if (!data) return { lines: [] };
+    // If lines already have a name field, no merging needed
+    if (data.lines && data.lines.length && data.lines[0].name) return data;
+    const meta = {};
+    for (const item of (data.items || [])) {
+      if (item.id) meta[item.id] = item;
+    }
+    const lines = (data.lines || []).map(line => {
+      const m = meta[line.id] || {};
+      return {
+        name:         m.name  || '',
+        icon:         m.image ? 'https://poe.ninja' + m.image : (m.icon || ''),
+        primaryValue: line.primaryValue,
+        volume:       line.volumePrimaryValue || 0,
+      };
+    }).filter(l => l.name);
+    return { lines };
+  }
+
+  function processHarvest(rawData, lfData, cfg) {
+    const data = cfg.useExchange ? normalizeExchangeData(rawData) : rawData;
+    const lines = (data.lines || []).filter(l => !l.corrupted);
+    const lfPrice = (lfData.prices || lfData)[cfg.lifeforce] || 0;
+    const craftCost = cfg.cost * lfPrice;
+    const isExchange = lines.length > 0 && lines[0].primaryValue != null;
+
+    const raw = lines
+      .map(l => ({
+        name:   l.name || '',
+        price:  l.primaryValue ?? l.chaosValue ?? 0,
+        icon:   l.icon || '',
+        volume: l.volume || 0,
+      }))
+      .filter(l => l.name && !(cfg.exclude && cfg.exclude.has(l.name)) && (!cfg.nameFilter || cfg.nameFilter(l.name)))
+      .map(l => ({ ...l, icon: (lfData.icons && lfData.icons[l.name]) || l.icon }));
+
+    if (!raw.length) return null;
+
+    // Use baked-in observed weights if provided; otherwise derive from volume/price ratio.
+    let probs;
+    if (cfg.weights) {
+      const wTotal = raw.reduce((s, l) => s + (cfg.weights[l.name] || 0), 0);
+      probs = raw.map(l => wTotal > 0 ? (cfg.weights[l.name] || 0) / wTotal : 1 / raw.length);
+    } else {
+      const vw = raw.map(l => l.price > 0 && l.volume > 0 ? l.volume / l.price : 0);
+      const vTotal = vw.reduce((s, w) => s + w, 0);
+      probs = vTotal > 0 ? vw.map(w => w / vTotal) : raw.map(() => 1 / raw.length);
+    }
+    const items = raw
+      .map((l, i) => ({ ...l, prob: probs[i] }))
+      .sort((a, b) => b.price - a.price);
+
+    const poolEv      = items.reduce((s, i) => s + i.prob * i.price, 0);
+    const craftThresh = poolEv - craftCost;
+    const cheapest    = [...items].sort((a, b) => a.price - b.price)[0].price;
+    const netEv       = poolEv - craftCost - cheapest;
+
+    return { items, poolEv, craftCost, craftThresh, netEv, lfPrice, lfName: cfg.lifeforce, poolSize: items.length, isExchange, showProb: !!cfg.showProb };
+  }
+
+  function processEssences(rawData, lfData) {
+    const data = normalizeExchangeData(rawData);
+    const lines = (data.lines || []).filter(l => !l.corrupted);
+    const lfPrice = (lfData.prices || lfData)['Primal Crystallised Lifeforce'] || 0;
+    const craftCost = 30 * lfPrice;
+
+    const byTier = {};
+    for (const line of lines) {
+      const name = line.name || '';
+      const m = name.match(/^(\w+)\s+Essence/);
+      if (!m) continue;
+      const tier = m[1];
+      if (!HIGH_ESSENCE_TIERS.has(tier)) continue;
+      if (!byTier[tier]) byTier[tier] = [];
+      byTier[tier].push({ name, price: line.primaryValue ?? line.chaosValue ?? 0, icon: (lfData.icons && lfData.icons[name]) || line.icon || '' });
+    }
+
+    return Object.entries(byTier).map(([tier, items]) => {
+      items.sort((a, b) => b.price - a.price);
+      const poolEv      = items.reduce((s, i) => s + i.price, 0) / items.length;
+      const craftThresh = poolEv - craftCost;
+      const netEv       = poolEv - craftCost - items[items.length - 1].price;
+      return { tier, items, poolEv, craftCost, craftThresh, netEv, lfPrice, poolSize: items.length };
+    }).sort((a, b) => b.poolEv - a.poolEv);
+  }
+
   // ─── CSS (Shadow DOM) ─────────────────────────────────────────────────────
   const CSS = `
     :host { all: initial; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 13px; color: #c9d1d9; }
@@ -455,7 +679,7 @@
     /* ── Status ── */
     #status {
       padding: 5px 14px; font-size: 11px; color: #8b949e;
-      flex-shrink: 0; min-height: 24px;
+      flex-shrink: 0; min-height: 24px; line-height: 1.6;
     }
     #status.err { color: #f85149; }
     #status.load { color: #388bfd; }
@@ -561,6 +785,43 @@
       transform: scale(1.04);
     }
 
+    /* ── Tab bar ── */
+    #tabs {
+      display: flex; border-bottom: 1px solid #21262d;
+      background: #0d1117; flex-shrink: 0; overflow-x: auto;
+    }
+    .tab {
+      padding: 6px 12px; font-size: 12px; font-weight: 500;
+      color: #8b949e; cursor: pointer; white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s; user-select: none;
+    }
+    .tab:hover { color: #c9d1d9; }
+    .tab.active { color: #e6b450; border-bottom-color: #e6b450; }
+
+    /* ── Harvest layout ── */
+    .harvest-summary {
+      padding: 6px 10px; background: rgba(255,255,255,.03); border-radius: 4px;
+      margin-bottom: 8px; font-size: 11px; color: #8b949e;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .harvest-summary strong { color: #c9d1d9; }
+    .h-row {
+      display: flex; align-items: center; gap: 5px; font-size: 12px; margin-bottom: 2px;
+    }
+    .h-row:last-child { margin-bottom: 0; }
+    .h-indicator { font-size: 10px; flex-shrink: 0; width: 10px; text-align: center; }
+    .break-even-line {
+      text-align: center; font-size: 10px; color: #8b949e;
+      padding: 3px 0; letter-spacing: 1px; margin: 2px 0;
+    }
+    .harvest-legend {
+      font-size: 11px; color: #8b949e; margin-bottom: 7px;
+      padding: 5px 8px; border-left: 2px solid #30363d;
+      line-height: 1.5;
+    }
+    .harvest-legend strong { color: #c9d1d9; }
+
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
@@ -597,6 +858,12 @@
       +   '<button class="hbtn" id="btn-refresh">&#x21BB; Refresh</button>'
       +   '<button class="hbtn" id="btn-min">&#x2014;</button>'
       +   '<button class="hbtn red" id="btn-close">&#x2715;</button>'
+      + '</div>'
+      + '<div id="tabs">'
+      +   '<div class="tab" data-tab="gems">&#x2697; Gems</div>'
+      +   '<div class="tab" data-tab="catalysts">Catalysts</div>'
+      +   '<div class="tab" data-tab="essences">Essences</div>'
+      +   '<div class="tab" data-tab="delirium">Deli Orbs</div>'
       + '</div>'
       + '<div id="ctrl"><div class="cl">'
       +   '<label for="top-n">Top</label>'
@@ -703,29 +970,115 @@
       </div>`;
   }
 
-  function render(shadow, results, topN) {
+  function renderHarvestList(items, craftThresh, showProb = false) {
+    let html = '';
+    let shownBreak = false;
+    for (const item of items) {
+      if (!shownBreak && item.price <= craftThresh) {
+        shownBreak = true;
+        html += `<div class="break-even-line"><span style="color:#3fb950">▲ keep above</span> · <span style="color:#f85149">▼ craft below</span> (${fmtC(craftThresh)})</div>`;
+      }
+      const keep = item.price > craftThresh;
+      html += `<div class="h-row">
+        <span class="h-indicator" style="color:${keep ? '#3fb950' : '#f85149'}">${keep ? '▲' : '▼'}</span>
+        ${item.icon ? `<img class="gem-icon" src="${escHtml(item.icon)}" alt="">` : '<span style="width:18px;flex-shrink:0"></span>'}
+        <span class="gem-name">${escHtml(item.name)}</span>
+        ${showProb ? `<span class="gem-prob">${pct(item.prob)}</span>` : ''}
+        <span class="gem-price">${fmtC(item.price)}</span>
+      </div>`;
+    }
+    return html;
+  }
+
+  function harvestLegend(craftCost, craftThresh, lfPrice) {
+    const lfStr = lfPrice > 0 ? `30 LF (${fmtC(craftCost)})` : `30 LF`;
+    return `<div class="harvest-legend">`
+      + `<strong>How it works:</strong> spend ${escHtml(lfStr)} to swap an item for a random one from the pool (pool EV: shown in header).`
+      + ` <span style="color:#3fb950">&#x25B2; keep</span> if price &gt; ${fmtC(craftThresh)} &nbsp;`
+      + `<span style="color:#f85149">&#x25BC; craft</span> if price &lt; ${fmtC(craftThresh)}`
+      + `</div>`;
+  }
+
+  function renderHarvestSection(results, label) {
+    if (!results) return `<div class="empty">No ${label} data found for this league.</div>`;
+    const { items, poolEv, craftCost, craftThresh, netEv, lfPrice, lfName, poolSize } = results;
+    const profitable = netEv > 0;
+    const evColor = profitable ? '#3fb950' : '#f85149';
+    return `
+      <div class="ccard" style="--accent:#58a6ff;--bg:rgba(88,166,255,.08);--border:rgba(88,166,255,.3)">
+        <div class="ccard-hdr">
+          <span class="chevron">&#x25BE;</span>
+          <span class="cbadge" style="background:#58a6ff;color:#0d1117">${escHtml(label)}</span>
+          <span class="ccard-title" style="color:#58a6ff">Harvest Swap</span>
+          <span class="pool-ev">EV: <strong>${fmtC(poolEv)}</strong> · Net: <strong style="color:${evColor}">${fmtC(netEv)}</strong></span>
+        </div>
+        <div class="col">
+          ${harvestLegend(craftCost, craftThresh, lfPrice)}
+          <div class="harvest-summary">
+            <div><strong>${poolSize} items</strong> in pool · ${escHtml(lfName)}: <strong>${fmtC(lfPrice)}</strong>/unit</div>
+            ${results.isExchange === false ? '<div style="color:#e6b450">⚠ Showing stash prices (exchange API unavailable)</div>' : ''}
+          </div>
+          ${renderHarvestList(items, craftThresh, results.showProb)}
+        </div>
+      </div>`;
+  }
+
+  function renderEssencesSection(tierResults) {
+    if (!tierResults || !tierResults.length) return '<div class="empty">No essence data found for this league.</div>';
+    return tierResults.map(({ tier, items, poolEv, craftCost, craftThresh, netEv, lfPrice, poolSize }) => {
+      const profitable = netEv > 0;
+      const evColor = profitable ? '#3fb950' : '#f85149';
+      return `
+        <div class="ccard" style="--accent:#a855f7;--bg:rgba(168,85,247,.08);--border:rgba(168,85,247,.3)">
+          <div class="ccard-hdr">
+            <span class="chevron">&#x25BE;</span>
+            <span class="cbadge" style="background:#a855f7;color:#fff">${escHtml(tier)}</span>
+            <span class="ccard-title" style="color:#a855f7">Essences</span>
+            <span class="pool-ev">EV: <strong>${fmtC(poolEv)}</strong> · Net: <strong style="color:${evColor}">${fmtC(netEv)}</strong></span>
+          </div>
+          <div class="col">
+            ${harvestLegend(craftCost, craftThresh, lfPrice)}
+            <div class="harvest-summary">
+              <div><strong>${poolSize} essences</strong> in pool · Primal LF: <strong>${fmtC(lfPrice)}</strong>/unit</div>
+            </div>
+            ${renderHarvestList(items, craftThresh)}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderIntoBody(shadow, html, statusText) {
     const body = shadow.getElementById('body');
     const status = shadow.getElementById('status');
-
-    const { colorStats, gemPicks } = results;
-
-    let html = '';
-    for (const c of ['r', 'g', 'b']) {
-      html += renderColorCard(colorStats[c], c);
-    }
-    html += renderSpecificSection(gemPicks, topN);
-
-    if (!html) html = '<div class="empty">No transfigured gem data found for this league.</div>';
-
+    if (!html) html = '<div class="empty">No data found for this league.</div>';
     setHTML(body, html);
-
-    // Wire collapse toggle on each card header
     body.querySelectorAll('.ccard-hdr').forEach(hdr => {
       hdr.addEventListener('click', () => hdr.closest('.ccard').classList.toggle('collapsed'));
     });
-
     status.className = '';
-    status.textContent = `${results.totalTransfig} transfigured gems (static) · ${results.totalLines} API entries`;
+    setHTML(status, statusText);
+  }
+
+  function render(shadow, results, topN) {
+    let html = '';
+    for (const c of ['r', 'g', 'b']) html += renderColorCard(results.colorStats[c], c);
+    html += renderSpecificSection(results.gemPicks, topN);
+    renderIntoBody(shadow, html, `${results.totalTransfig} transfigured gems (static) · ${results.totalLines} API entries`);
+  }
+
+  function renderHarvest(shadow, results, label) {
+    let statusText;
+    if (results && results.showProb) {
+      const poolLine = `${results.poolSize}\u00a0items in pool \u00b7 ${escHtml(results.lfName)}: ${fmtC(results.lfPrice)}/unit`;
+      statusText = `EV\u00a0=\u00a0\u03a3(drop\u00a0rate\u00a0\u00d7\u00a0price) \u00b7 probabilities from ~2000 swaps by lifewithoutpants_ (YT)<br><span style="opacity:.7">${poolLine}</span>`;
+    } else {
+      statusText = escHtml(label) + ' \u2014 Harvest swap EV';
+    }
+    renderIntoBody(shadow, renderHarvestSection(results, label), statusText);
+  }
+
+  function renderEssences(shadow, tierResults) {
+    renderIntoBody(shadow, renderEssencesSection(tierResults), 'Essences — Harvest swap EV');
   }
 
   // ─── Drag ─────────────────────────────────────────────────────────────────
@@ -781,38 +1134,84 @@
     makeResizable(shadow);
 
     const status = shadow.getElementById('status');
+    const ctrl   = shadow.getElementById('ctrl');
     let topN = 8;
+    let activeTab = tabFromUrl() || 'gems';
 
-    async function load(bustCache = false) {
+    function setActiveTab(tab) {
+      activeTab = tab;
+      shadow.querySelectorAll('.tab').forEach(el => {
+        el.classList.toggle('active', el.dataset.tab === tab);
+      });
+      const isGems = tab === 'gems';
+      ctrl.style.display = isGems ? '' : 'none';
+    }
+
+    async function loadTab(tab, bust = false) {
+      setActiveTab(tab);
       status.className = 'load';
-      status.textContent = `Fetching ${league} gem data…`;
-      if (bustCache) { _cache = null; }
+      status.textContent = `Fetching ${league} data…`;
+      if (bust) bustCache(league, tab === 'gems' ? 'SkillGem' : (HARVEST_TABS[tab]?.type || tab));
+
       try {
-        const data = await fetchGems(league);
-        const results = processGems(data, topN);
-        render(shadow, results, topN);
+        if (tab === 'gems') {
+          const data = await fetchItems(league, 'SkillGem');
+          render(shadow, processGems(data, topN), topN);
+        } else if (tab === 'essences') {
+          const cfg = HARVEST_TABS.essences;
+          const [data, lfData, itemData] = await Promise.all([
+            (cfg.useExchange ? fetchExchange(league, cfg.type) : fetchItems(league, cfg.type)),
+            fetchLifeforce(league),
+            cfg.useExchange ? fetchItems(league, cfg.type).catch(() => ({ lines: [] })) : Promise.resolve({ lines: [] }),
+          ]);
+          const itemIcons = {};
+          for (const l of (itemData.lines || [])) { if (l.name && l.icon) itemIcons[l.name] = l.icon; }
+          const enrichedLf = { ...lfData, icons: { ...itemIcons, ...(lfData.icons || {}) } };
+          renderEssences(shadow, processEssences(data, enrichedLf));
+        } else {
+          const cfg = HARVEST_TABS[tab];
+          const [dataResult, lfData, itemData] = await Promise.all([
+            (cfg.useExchange ? fetchExchange(league, cfg.type) : fetchItems(league, cfg.type))
+              .catch(() => ({ lines: [], _unavailable: true })),
+            fetchLifeforce(league),
+            cfg.useExchange ? fetchItems(league, cfg.type).catch(() => ({ lines: [] })) : Promise.resolve({ lines: [] }),
+          ]);
+          const itemIcons = {};
+          for (const l of (itemData.lines || [])) { if (l.name && l.icon) itemIcons[l.name] = l.icon; }
+          const enrichedLf = { ...lfData, icons: { ...itemIcons, ...(lfData.icons || {}) } };
+          if (dataResult._unavailable) {
+            renderIntoBody(shadow, `<div class="empty">${escHtml(cfg.label)} data is not available for this league.</div>`, '');
+          } else {
+            renderHarvest(shadow, processHarvest(dataResult, enrichedLf, cfg), cfg.label);
+          }
+        }
       } catch (err) {
         status.className = 'err';
         status.textContent = `Error: ${err.message}`;
       }
     }
 
-    shadow.getElementById('btn-refresh').onclick = () => load(true);
+    // Wire tab clicks
+    shadow.querySelectorAll('.tab').forEach(el => {
+      el.addEventListener('click', () => loadTab(el.dataset.tab));
+    });
+
+    shadow.getElementById('btn-refresh').onclick = () => loadTab(activeTab, true);
     shadow.getElementById('btn-close').onclick   = () => host.remove();
     shadow.getElementById('btn-min').onclick = () => {
       const body   = shadow.getElementById('body');
-      const ctrl   = shadow.getElementById('ctrl');
+      const tabs   = shadow.getElementById('tabs');
       const st     = shadow.getElementById('status');
       const hidden = body.style.display === 'none';
-      [body, ctrl, st].forEach(el => (el.style.display = hidden ? '' : 'none'));
+      [body, tabs, ctrl, st].forEach(el => (el.style.display = hidden ? '' : 'none'));
       shadow.getElementById('btn-min').textContent = hidden ? '—' : '□';
     };
     shadow.getElementById('top-n').onchange = e => {
       topN = parseInt(e.target.value, 10);
-      load();
+      loadTab('gems');
     };
 
-    load();
+    loadTab(activeTab);
   }
 
   // Inject interceptor immediately at script load (document_start) so we hook
@@ -827,7 +1226,7 @@
   window.addEventListener('popstate', maybeInit);
 
   function maybeInit() {
-    if (location.pathname.includes('skill-gems') && !document.getElementById('gemcheck-host')) {
+    if (tabFromUrl() && !document.getElementById('gemcheck-host')) {
       setTimeout(init, 600);
     }
   }
