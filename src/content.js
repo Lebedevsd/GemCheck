@@ -227,6 +227,7 @@
     if (v == null) return '—';
     if (v >= 1000) return (v / 1000).toFixed(1) + 'k c';
     if (v >= 100)  return Math.round(v) + 'c';
+    if (v > 0 && v < 0.1) return v.toFixed(2) + 'c';
     return v.toFixed(1) + 'c';
   }
 
@@ -420,8 +421,9 @@
   }
 
   // ─── Data Processing ──────────────────────────────────────────────────────
-  function processGems(apiData, topN = 5) {
-    const lines = (apiData.lines || []).filter(g => !g.corrupted);
+  function processGems(apiData, topN = 5, gemLQ = { level: 1, quality: 0 }) {
+    const allLines = (apiData.lines || []).filter(g => !g.corrupted);
+    const lines = allLines.filter(g => g.gemLevel === gemLQ.level && (g.gemQuality ?? 0) === gemLQ.quality);
 
     // Build cheapest price lookup from API: transfig name → entry
     const priceMap = {};
@@ -639,16 +641,19 @@
       flex-shrink: 0;
     }
     #hdr:active { cursor: grabbing; }
-    #title { font-weight: 700; font-size: 14px; color: #e6b450; flex: 1; }
+    #title { font-weight: 700; font-size: 14px; color: #e6b450; }
     #league-badge {
-      font-size: 11px; padding: 2px 9px;
+      font-size: 13px; padding: 4px 9px;
       background: #1f2937; color: #9ca3af;
       border: 1px solid #374151; border-radius: 10px;
+      flex: 1; text-align: center;
+      white-space: normal; word-break: break-word; line-height: 1.3;
     }
     .hbtn {
       background: #21262d; border: 1px solid #30363d;
       color: #c9d1d9; border-radius: 5px;
-      padding: 3px 9px; cursor: pointer; font-size: 12px;
+      padding: 0 9px; cursor: pointer; font-size: 12px;
+      height: 24px; line-height: 24px;
       transition: background .15s;
     }
     .hbtn:hover { background: #30363d; }
@@ -686,6 +691,8 @@
 
     /* ── Scroll body ── */
     #body { overflow-y: auto; flex: 1; min-height: 0; padding: 10px 12px; display: flex; flex-direction: column; gap: 12px; }
+    #body.grid-layout { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: auto; align-content: start; }
+    #body.grid-layout .ccard-full { grid-column: 1 / -1; }
 
     /* ── Resize handle ── */
     #resize-handle {
@@ -696,6 +703,14 @@
       background: linear-gradient(135deg, transparent 40%, #8b949e 40%, #8b949e 55%, transparent 55%, transparent 70%, #8b949e 70%, #8b949e 85%, transparent 85%);
     }
     #resize-handle:hover { opacity: .7; }
+    #resize-handle-left {
+      position: absolute; bottom: 3px; left: 3px;
+      width: 12px; height: 12px;
+      cursor: nesw-resize;
+      opacity: .3;
+      background: linear-gradient(225deg, transparent 40%, #8b949e 40%, #8b949e 55%, transparent 55%, transparent 70%, #8b949e 70%, #8b949e 85%, transparent 85%);
+    }
+    #resize-handle-left:hover { opacity: .7; }
 
     /* ── Color card ── */
     .ccard {
@@ -874,7 +889,15 @@
       +   '</select>'
       +   '<span>gems per colour</span>'
       + '</div>'
-      + '<span id="font-badge" title="Prices shown are for level 1, 0% quality gems — the raw output of the Divine Font">&#x2697; lvl\u00a01 \u00b7 q\u00a00%</span>'
+      + '<div class="cl">'
+      +   '<select id="gem-lq">'
+      +     '<option value="1-0">lvl\u00a01 \u00b7 q\u00a00%</option>'
+      +     '<option value="1-20">lvl\u00a01 \u00b7 q\u00a020%</option>'
+      +     '<option value="20-0">lvl\u00a020 \u00b7 q\u00a00%</option>'
+      +     '<option value="20-20">lvl\u00a020 \u00b7 q\u00a020%</option>'
+      +   '</select>'
+      + '</div>'
+      + '<span id="font-badge" title="Prices for non-corrupted gems at the selected level and quality">&#x2697;</span>'
       + '</div>'
       + '<div id="status" class="load">Loading\u2026</div>'
       + '<div id="body"></div>'
@@ -882,6 +905,7 @@
       +   '<a href="https://buymeacoffee.com/lebedevsd" target="_blank" rel="noopener">&#x2615; Buy me a coffee</a>'
       + '</div>'
       + '<div id="resize-handle"></div>'
+      + '<div id="resize-handle-left"></div>'
       + '</div>';
     shadow.appendChild(tpl.content);
 
@@ -960,7 +984,7 @@
     }).join('');
 
     return `
-      <div class="ccard" style="--accent:#e6b450;--bg:rgba(230,180,80,.06);--border:rgba(230,180,80,.25)">
+      <div class="ccard ccard-full" style="--accent:#e6b450;--bg:rgba(230,180,80,.06);--border:rgba(230,180,80,.25)">
         <div class="ccard-hdr">
           <span class="chevron">&#x25BE;</span>
           <span class="cbadge" style="background:#e6b450;color:#0d1117">Best</span>
@@ -1005,7 +1029,7 @@
     const profitable = netEv > 0;
     const evColor = profitable ? '#3fb950' : '#f85149';
     return `
-      <div class="ccard" style="--accent:#58a6ff;--bg:rgba(88,166,255,.08);--border:rgba(88,166,255,.3)">
+      <div class="ccard ccard-full" style="--accent:#58a6ff;--bg:rgba(88,166,255,.08);--border:rgba(88,166,255,.3)">
         <div class="ccard-hdr">
           <span class="chevron">&#x25BE;</span>
           <span class="cbadge" style="background:#58a6ff;color:#0d1117">${escHtml(label)}</span>
@@ -1029,7 +1053,7 @@
       const profitable = netEv > 0;
       const evColor = profitable ? '#3fb950' : '#f85149';
       return `
-        <div class="ccard" style="--accent:#a855f7;--bg:rgba(168,85,247,.08);--border:rgba(168,85,247,.3)">
+        <div class="ccard ccard-full" style="--accent:#a855f7;--bg:rgba(168,85,247,.08);--border:rgba(168,85,247,.3)">
           <div class="ccard-hdr">
             <span class="chevron">&#x25BE;</span>
             <span class="cbadge" style="background:#a855f7;color:#fff">${escHtml(tier)}</span>
@@ -1059,11 +1083,15 @@
     setHTML(status, statusText);
   }
 
-  function render(shadow, results, topN) {
+  function render(shadow, results, topN, gcp = {}) {
     let html = '';
     for (const c of ['r', 'g', 'b']) html += renderColorCard(results.colorStats[c], c);
     html += renderSpecificSection(results.gemPicks, topN);
-    renderIntoBody(shadow, html, `${results.totalTransfig} transfigured gems (static) · ${results.totalLines} API entries`);
+    const gcpImg  = gcp.icon ? `<img src="${escHtml(gcp.icon)}" style="width:14px;height:14px;object-fit:contain;vertical-align:middle;margin-right:3px">` : '';
+    const gcpLine = gcp.price > 0
+      ? `<br>${gcpImg}Gemcutter\u2019s Prism: <strong>${fmtC(gcp.price)}</strong> \u00b7 \u00d720 = <strong>${fmtC(gcp.price * 20)}</strong>`
+      : '';
+    renderIntoBody(shadow, html, `${results.totalTransfig} transfigured gems (static) \u00b7 ${results.totalLines} API entries${gcpLine}`);
   }
 
   function renderHarvest(shadow, results, label) {
@@ -1104,16 +1132,37 @@
 
   // ─── Resize ───────────────────────────────────────────────────────────────
   function makeResizable(shadow) {
+    const host   = shadow.host;
     const panel  = shadow.getElementById('panel');
-    const handle = shadow.getElementById('resize-handle');
-    handle.addEventListener('mousedown', e => {
-      e.preventDefault();
-      e.stopPropagation();
+
+    shadow.getElementById('resize-handle').addEventListener('mousedown', e => {
+      e.preventDefault(); e.stopPropagation();
       const startX = e.clientX, startY = e.clientY;
       const startW = panel.offsetWidth, startH = panel.offsetHeight;
       const onMove = ev => {
         panel.style.width     = Math.max(360, startW + ev.clientX - startX) + 'px';
         panel.style.maxHeight = Math.max(200, startH + ev.clientY - startY) + 'px';
+      };
+      const onUp = () => {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup',  onUp);
+      };
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup',  onUp);
+    });
+
+    shadow.getElementById('resize-handle-left').addEventListener('mousedown', e => {
+      e.preventDefault(); e.stopPropagation();
+      const startX = e.clientX, startY = e.clientY;
+      const startW = panel.offsetWidth, startH = panel.offsetHeight;
+      const startLeft = host.getBoundingClientRect().left;
+      const onMove = ev => {
+        const dx   = ev.clientX - startX;
+        const newW = Math.max(360, startW - dx);
+        panel.style.width     = newW + 'px';
+        panel.style.maxHeight = Math.max(200, startH + ev.clientY - startY) + 'px';
+        host.style.right = 'auto';
+        host.style.left  = (startLeft + startW - newW) + 'px';
       };
       const onUp = () => {
         document.removeEventListener('mousemove', onMove);
@@ -1133,10 +1182,22 @@
     makeDraggable(host, shadow.getElementById('hdr'));
     makeResizable(shadow);
 
+    const body = shadow.getElementById('body');
+    new ResizeObserver(entries => {
+      body.classList.toggle('grid-layout', entries[0].contentRect.width >= 680);
+    }).observe(body);
+
     const status = shadow.getElementById('status');
     const ctrl   = shadow.getElementById('ctrl');
     let topN = 8;
+    let gemLQ = { level: 1, quality: 0 };
     let activeTab = tabFromUrl() || 'gems';
+
+    function updateFontBadge() {
+      const b = shadow.getElementById('font-badge');
+      b.textContent = `\u2697 lvl\u00a0${gemLQ.level} \u00b7 q\u00a0${gemLQ.quality}%`;
+    }
+    updateFontBadge();
 
     function setActiveTab(tab) {
       activeTab = tab;
@@ -1155,8 +1216,15 @@
 
       try {
         if (tab === 'gems') {
-          const data = await fetchItems(league, 'SkillGem');
-          render(shadow, processGems(data, topN), topN);
+          const [data, currData] = await Promise.all([
+            fetchItems(league, 'SkillGem'),
+            fetchItems(league, 'Currency').catch(() => ({ lines: [], currencyDetails: [] })),
+          ]);
+          const gcpLine   = (currData.lines || []).find(l => (l.currencyTypeName || l.name) === "Gemcutter's Prism");
+          const gcpDetail = (currData.currencyDetails || []).find(d => d.name === "Gemcutter's Prism");
+          const gcpPrice  = gcpLine ? (gcpLine.chaosEquivalent || gcpLine.chaosValue || 0) : 0;
+          const gcpIcon   = gcpDetail ? gcpDetail.icon : '';
+          render(shadow, processGems(data, topN, gemLQ), topN, { price: gcpPrice, icon: gcpIcon });
         } else if (tab === 'essences') {
           const cfg = HARVEST_TABS.essences;
           const [data, lfData, itemData] = await Promise.all([
@@ -1203,11 +1271,18 @@
       const tabs   = shadow.getElementById('tabs');
       const st     = shadow.getElementById('status');
       const hidden = body.style.display === 'none';
-      [body, tabs, ctrl, st].forEach(el => (el.style.display = hidden ? '' : 'none'));
+      [body, tabs, st].forEach(el => (el.style.display = hidden ? '' : 'none'));
+      if (hidden) setActiveTab(activeTab); else ctrl.style.display = 'none';
       shadow.getElementById('btn-min').textContent = hidden ? '—' : '□';
     };
     shadow.getElementById('top-n').onchange = e => {
       topN = parseInt(e.target.value, 10);
+      loadTab('gems');
+    };
+    shadow.getElementById('gem-lq').onchange = e => {
+      const [l, q] = e.target.value.split('-').map(Number);
+      gemLQ = { level: l, quality: q };
+      updateFontBadge();
       loadTab('gems');
     };
 

@@ -39,6 +39,7 @@ Drop probabilities for Catalysts and Delirium Orbs are based on ~2000 observed s
 - **Color Roll Bingo** — for each colour (Red / Green / Blue) shows the top target gems with pool EV, hit probability per gem, and current sell price.
 - **Best Specific Gems** — a combined cross-colour ranking of all base gems sorted by EV, with every variant's probability and sell price listed.
 - **Configurable Top N** — choose how many gems to show per section (3 / 5 / 8).
+- **Level/quality filter** — switch between lvl 1 q 0%, lvl 1 q 20%, lvl 20 q 0%, and lvl 20 q 20% to compare prices across gem states.
 
 ### Harvest Swap (Currency / Essences / Delirium Orbs pages)
 - **Catalysts** — weighted EV with observed drop probabilities; excludes Dextral, Sinistral, and Tainted Catalysts (different mechanic).

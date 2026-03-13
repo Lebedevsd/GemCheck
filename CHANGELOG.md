@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.1.1] – 2026-03-13
+
+### Added
+- **Harvest swap tabs** — Catalysts, Essences, and Delirium Orbs tabs with pool EV, craft threshold, and ▲ keep / ▼ craft indicators per item
+- **Weighted EV** — Catalyst and Delirium Orb probabilities use baked-in observed drop rates from ~2000 swaps by lifewithoutpants_ (YouTube) instead of uniform distribution
+- **Gem level/quality filter** — switch between lvl 1 q 0%, lvl 1 q 20%, lvl 20 q 0%, and lvl 20 q 20% for all gem pricing
+- **EV methodology note** — shown in the status bar on Catalysts and Deli Orbs tabs with data credit
+
+### Changed
+- Transfigured gem pool updated for the new league: 197 total (35r / 75g / 87b), up from 166
+- Header buttons and league badge unified to consistent 24px height
+- Arrows (▲/▼) moved to fixed-width column so prices don't shift
+
+### Fixed
+- Minimize → restore now correctly hides gem controls when on a harvest tab
+- Gem q 0% filter now matches API entries where `gemQuality` is absent (treated as 0)
+- Images for Essences and Delirium Orbs now load via itemoverview CDN URLs
+- Lifeforce prices below 0.1c now show two decimal places instead of rounding to 0.0c
+- Essences now fetch from the exchange API matching other harvest tabs
+
+---
+
 ## [1.0.4] – 2026-03-03
 
 ### Fixed
