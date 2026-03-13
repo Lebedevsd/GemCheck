@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2] – 2026-03-13
+
+### Fixed
+- Manifest description trimmed to fit Chrome Web Store 132-character limit
+- Store description updated to cover Harvest swap, gem filter, and GCP features
+- GitHub Actions workflow pinned to Node.js 24-compatible action versions
+
 ## [1.1.1] – 2026-03-13
 
 ### Added
