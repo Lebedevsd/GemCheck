@@ -2,10 +2,11 @@
 
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-donate-yellow?logo=buy-me-a-coffee)](https://buymeacoffee.com/lebedevsd)
 
-A browser extension that overlays a floating panel on [poe.ninja](https://poe.ninja) and helps you make profitable decisions at two endgame crafting mechanics in Path of Exile:
+A browser extension that overlays a floating panel on [poe.ninja](https://poe.ninja) and helps you make profitable decisions at several endgame crafting mechanics in Path of Exile:
 
 - **Labyrinth Divine Font** — which transfigured gems to hunt
-- **Harvest crafting** — whether to swap Catalysts, Essences, or Delirium Orbs for profit
+- **Harvest crafting** — whether to swap Catalysts, Essences, Delirium Orbs, or Astrolabes for profit
+- **Forbidden Jewels** — average market price of Forbidden Flame and Forbidden Flesh variants in divines
 
 ![GemCheck panel screenshot](assets/screenshot_store.png)
 
@@ -41,11 +42,17 @@ Drop probabilities for Catalysts and Delirium Orbs are based on ~2000 observed s
 - **Configurable Top N** — choose how many gems to show per section (3 / 5 / 8).
 - **Level/quality filter** — switch between lvl 1 q 0%, lvl 1 q 20%, lvl 20 q 0%, and lvl 20 q 20% to compare prices across gem states.
 
-### Harvest Swap (Currency / Essences / Delirium Orbs pages)
+### Harvest Swap (Currency / Essences / Delirium Orbs / Astrolabes pages)
 - **Catalysts** — weighted EV with observed drop probabilities; excludes Dextral, Sinistral, and Tainted Catalysts (different mechanic).
 - **Essences** — EV for Deafening Essence swaps.
 - **Delirium Orbs** — weighted EV with observed drop probabilities.
+- **Astrolabes** — EV for Astrolabe swaps (400 Primal Lifeforce per swap).
 - **▲ keep / ▼ craft indicators** — tells you at a glance which items are worth sacrificing.
+
+### Forbidden Jewels (Forbidden Jewels page)
+- **Avg price in divines** for Forbidden Flame and Forbidden Flesh across all passive variants.
+- **Two rows**: all variants, and excluding 7 hidden ascendancy passives unavailable in-game.
+- **Columns**: avg · σ (standard deviation) · min · max.
 
 ### General
 - **Live pricing** — pulls directly from poe.ninja's public API for the current league. Data is cached for 5 minutes; a Refresh button busts the cache.
@@ -92,9 +99,13 @@ The panel appears automatically on the relevant poe.ninja pages.
 1. Go to `poe.ninja › Economy › [your league] › Skill Gems`.
 2. Use the **Top N** selector to control how many gems are shown per colour.
 
-**Harvest Swap (Catalysts / Essences / Deli Orbs):**
-1. Go to `poe.ninja › Economy › [your league] › Currency` (Catalysts), `Essences`, or `Delirium Orbs`.
+**Harvest Swap (Catalysts / Essences / Deli Orbs / Astrolabes):**
+1. Go to `poe.ninja › Economy › [your league] › Currency` (Catalysts), `Essences`, `Delirium Orbs`, or `Astrolabes`.
 2. Items marked **▲** are worth holding; items marked **▼** are worth sacrificing for a reroll.
+
+**Forbidden Jewels:**
+1. Go to `poe.ninja › Economy › [your league] › Forbidden Jewels`.
+2. The panel shows avg, σ, min, max prices in divines for Forbidden Flame and Forbidden Flesh — with and without the 7 hidden ascendancy passives.
 
 **General:**
 - Click **Refresh** to fetch the latest prices.
@@ -147,8 +158,9 @@ This scrapes poewiki for the latest base gem and transfigured gem lists, updates
 
 - **Gem prices** — [poe.ninja](https://poe.ninja) public API (`/api/data/itemoverview?type=SkillGem`)
 - **Gem colour data** — [poewiki.net/wiki/List_of_skill_gems](https://www.poewiki.net/wiki/List_of_skill_gems)
-- **Catalyst / Deli Orb prices** — poe.ninja exchange API (`/api/economy/exchange/current/overview`)
-- **Essence / Delirium Orb prices** — poe.ninja item API (`/api/data/itemoverview`)
+- **Catalyst / Deli Orb / Astrolabe prices** — poe.ninja exchange API (`/api/economy/exchange/current/overview`)
+- **Essence prices** — poe.ninja item API (`/api/data/itemoverview`)
+- **Forbidden Jewel prices** — poe.ninja stash API (`/poe1/api/economy/stash/current/item/overview?type=ForbiddenJewel`)
 - **Catalyst & Deli Orb drop weights** — ~2000 observed swaps by [lifewithoutpants_](https://www.youtube.com/@lifewithoutpants_) (YouTube)
 
 ---

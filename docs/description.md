@@ -56,6 +56,14 @@ modes so you can make informed decisions before you run the lab.
   • Delirium Orbs — EV for Delirium Orb swaps using experimental
     drop-weight data (credit: lifewithoutpants_ on YouTube).
 
+  • Astrolabes — EV for Astrolabe swaps (400 Primal Lifeforce per swap).
+
+  FORBIDDEN JEWELS
+
+  • Forbidden Flame / Forbidden Flesh — average price per passive variant
+    in divines, with and without the 7 hidden ascendancy passives that are
+    unavailable in-game. Shows avg, σ (std dev), min, and max.
+
   GENERAL
 
   • Live pricing — pulls directly from poe.ninja's API for the current

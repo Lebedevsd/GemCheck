@@ -9,6 +9,8 @@
     if (p.includes('fossils'))       return 'fossils';
     if (p.includes('currency')) return 'catalysts';
     if (p.includes('essences'))      return 'essences';
+    if (p.includes('astrolabes'))      return 'astrolabes';
+    if (p.includes('forbidden-jewels')) return 'fjewels';
     return null;
   }
 
@@ -193,6 +195,7 @@
                    'Unstable Catalyst':     0.0160,
                  } },
     essences:  { label: 'Essences',  type: 'Essence',     lifeforce: 'Primal Crystallised Lifeforce', cost: 30, useExchange: true },
+    astrolabes:{ label: 'Astrolabes', type: 'Astrolabe', lifeforce: 'Primal Crystallised Lifeforce', cost: 400, useExchange: true },
     delirium:  { label: 'Deli Orbs', type: 'DeliriumOrb', lifeforce: 'Primal Crystallised Lifeforce', cost: 30, useExchange: true, showProb: true,
                  // Observed drop rates from ~1955-swap experiment, normalised to orbs present on poe.ninja
                  // (Foreboding, Imperial, Fossilised, Amorphous, Obscured excluded — not on exchange)
@@ -246,6 +249,7 @@
   const ITEM_API     = 'https://poe.ninja/api/data/itemoverview';
   const CURR_API     = 'https://poe.ninja/api/data/currencyoverview';
   const EXCHANGE_API = 'https://poe.ninja/poe1/api/economy/exchange/current/overview';
+  const STASH_API    = 'https://poe.ninja/poe1/api/economy/stash/current/item/overview';
   const _caches = {}, _cacheTimes = {}, _cacheLeagues = {};
   const CACHE_TTL = 5 * 60 * 1000;
 
@@ -415,6 +419,34 @@
     return fetchItems(league, type);
   }
 
+  async function fetchStash(league, type) {
+    const key = `stash-${type}-${league}`;
+    const now = Date.now();
+    if (_caches[key] && _cacheLeagues[key] === league && now - (_cacheTimes[key] || 0) < CACHE_TTL) {
+      return _caches[key];
+    }
+    const normalized = normalizeLeague(league);
+    const urls = [...new Set([
+      `${STASH_API}?league=${encodeURIComponent(normalized)}&type=${type}`,
+      `${STASH_API}?league=${encodeURIComponent(cap(league))}&type=${type}`,
+    ])];
+    for (const url of urls) {
+      console.log('[GemCheck] stash trying:', url);
+      try {
+        const r = await fetch(url, { credentials: 'include' });
+        console.log('[GemCheck] stash response:', r.status, r.ok);
+        if (!r.ok) continue;
+        const data = await r.json();
+        console.log('[GemCheck] stash lines:', (data.lines || []).length);
+        if ((data.lines || []).length > 0) {
+          _caches[key] = data; _cacheTimes[key] = now; _cacheLeagues[key] = league;
+          return data;
+        }
+      } catch (err) { console.warn('[GemCheck] stash fetch error:', err.message); }
+    }
+    throw new Error(`No stash data for ${type} / ${league}`);
+  }
+
   function bustCache(league, type) {
     const key = `${type}-${league}`;
     delete _caches[key]; delete _cacheTimes[key]; delete _cacheLeagues[key];
@@ -581,7 +613,7 @@
     const cheapest    = [...items].sort((a, b) => a.price - b.price)[0].price;
     const netEv       = poolEv - craftCost - cheapest;
 
-    return { items, poolEv, craftCost, craftThresh, netEv, lfPrice, lfName: cfg.lifeforce, poolSize: items.length, isExchange, showProb: !!cfg.showProb };
+    return { items, poolEv, craftCost, craftThresh, netEv, lfPrice, lfName: cfg.lifeforce, poolSize: items.length, isExchange, showProb: !!cfg.showProb, lfCount: cfg.cost };
   }
 
   function processEssences(rawData, lfData) {
@@ -836,6 +868,7 @@
       line-height: 1.5;
     }
     .harvest-legend strong { color: #c9d1d9; }
+    .harvest-legend p + p { margin-top: 4px; }
 
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -849,6 +882,101 @@
   function setHTML(el, html) {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     el.replaceChildren(...Array.from(doc.body.childNodes).map(n => document.adoptNode(n)));
+  }
+
+  const HIDDEN_ASCENDANCIES = new Set([
+    'Fury of Nature', 'Harness the Void', 'Nine Lives', 'Searing Purity',
+    'Fatal Flourish', 'Indomitable Resolve', 'Unleashed Potential',
+  ]);
+
+  function processFJewels(apiData) {
+    const raw = (apiData.lines || []);
+    console.log('[GemCheck] processFJewels raw lines:', raw.length);
+    if (raw.length) {
+      console.log('[GemCheck] sample line:', JSON.stringify(raw[0]));
+    }
+
+    // Detect field orientation: name=jewel/variant=passive  OR  name=passive/variant=jewel
+    const nameIsJewel = raw.some(l => l.name === 'Forbidden Flame' || l.name === 'Forbidden Flesh');
+    const variantIsJewel = !nameIsJewel && raw.some(l => l.variant === 'Forbidden Flame' || l.variant === 'Forbidden Flesh');
+    console.log('[GemCheck] nameIsJewel:', nameIsJewel, 'variantIsJewel:', variantIsJewel);
+
+    const lines = raw.filter(l => !l.corrupted);
+    function getJewel(l) { return nameIsJewel ? l.name : (variantIsJewel ? l.variant : l.name); }
+    function getPassive(l) { return nameIsJewel ? l.variant : (variantIsJewel ? l.name : l.variant); }
+
+    function stats(items) {
+      if (!items.length) return null;
+      const prices = items.map(l => l.divineValue || 0).filter(p => p > 0);
+      if (!prices.length) return null;
+      const avg = prices.reduce((s, p) => s + p, 0) / prices.length;
+      const sigma = Math.sqrt(prices.reduce((s, p) => s + (p - avg) ** 2, 0) / prices.length);
+      return { count: items.length, avg, sigma, min: Math.min(...prices), max: Math.max(...prices) };
+    }
+    function both(jewel) {
+      const all = lines.filter(l => getJewel(l) === jewel);
+      const visible = all.filter(l => !HIDDEN_ASCENDANCIES.has(getPassive(l)));
+      const sorted = [...all].sort((a, b) => (b.divineValue || 0) - (a.divineValue || 0));
+      if (sorted.length) {
+        console.log(`[GemCheck] ${jewel} most expensive:`, getPassive(sorted[0]), sorted[0].divineValue + ' div');
+        console.log(`[GemCheck] ${jewel} cheapest:`, getPassive(sorted[sorted.length - 1]), sorted[sorted.length - 1].divineValue + ' div');
+      }
+      return { all: stats(all), visible: stats(visible) };
+    }
+    return { flame: both('Forbidden Flame'), flesh: both('Forbidden Flesh') };
+  }
+
+  function renderFJewels(shadow, data) {
+    if (!data.flame.all && !data.flesh.all) {
+      renderIntoBody(shadow, `<div class="empty">No Forbidden Jewel data found.<br><small style="opacity:.6">flame.all=${data.flame.all} flesh.all=${data.flesh.all}</small></div>`, '');
+      return;
+    }
+    function fmtD(d) { return d.toFixed(2) + '\u00a0D'; }
+    const legend = `<div class="harvest-legend">
+      <p>Prices per passive variant from poe.ninja, expressed in divines (D).</p>
+      <p><strong>All</strong> — every variant including hidden ascendancies (${HIDDEN_ASCENDANCIES.size} passives unavailable in-game).</p>
+      <p><strong>No hidden</strong> — excludes them for a realistic market average.</p>
+      <p><strong>avg</strong> = arithmetic mean &nbsp;&middot;&nbsp; <strong>&sigma;</strong> = standard deviation (spread) &nbsp;&middot;&nbsp; <strong>min / max</strong> = cheapest / most expensive variant.</p>
+    </div>`;
+    const tcss = 'style="border-collapse:collapse;width:100%;font-size:12px"';
+    const thcss = 'style="text-align:right;color:#8b949e;font-weight:normal;padding:2px 8px 4px 0"';
+    const tdcss = 'style="text-align:right;color:#c9d1d9;padding:2px 8px 2px 0"';
+    const td1css = 'style="color:#8b949e;padding:2px 8px 2px 0;white-space:nowrap"';
+    function row(label, s) {
+      return `<tr><td ${td1css}>${escHtml(label)}</td>`
+        + `<td ${tdcss}>${fmtD(s.avg)}</td>`
+        + `<td ${tdcss}>${fmtD(s.sigma)}</td>`
+        + `<td ${tdcss}>${fmtD(s.min)}</td>`
+        + `<td ${tdcss}>${fmtD(s.max)}</td></tr>`;
+    }
+    function card(label, both, accent) {
+      const s = both.all;
+      const sv = both.visible;
+      if (!s) return '';
+      return `<div class="ccard ccard-full" style="--accent:${accent};--bg:rgba(88,166,255,.05);--border:${accent}55">
+        <div class="ccard-hdr">
+          <span class="cbadge" style="background:${accent};color:#0d1117">${escHtml(label)}</span>
+          <span class="pool-ev">avg: <strong>${fmtD(s.avg)}</strong></span>
+        </div>
+        <div class="col" style="padding:8px 10px">
+          <table ${tcss}>
+            <thead><tr>
+              <th ${thcss}></th>
+              <th ${thcss}>avg</th>
+              <th ${thcss}>&sigma;</th>
+              <th ${thcss}>min</th>
+              <th ${thcss}>max</th>
+            </tr></thead>
+            <tbody>
+              ${row('All (' + s.count + ')', s)}
+              ${sv ? row('No hidden (' + sv.count + ')', sv) : ''}
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+    }
+    const html = legend + card('Forbidden Flame', data.flame, '#e05050') + card('Forbidden Flesh', data.flesh, '#4caf50');
+    renderIntoBody(shadow, html, 'Forbidden Jewels — avg price in divines');
   }
 
   function buildPanel(league) {
@@ -879,6 +1007,8 @@
       +   '<div class="tab" data-tab="catalysts">Catalysts</div>'
       +   '<div class="tab" data-tab="essences">Essences</div>'
       +   '<div class="tab" data-tab="delirium">Deli Orbs</div>'
+      +   '<div class="tab" data-tab="astrolabes">Astrolabes</div>'
+      +   '<div class="tab" data-tab="fjewels">F. Jewels</div>'
       + '</div>'
       + '<div id="ctrl"><div class="cl">'
       +   '<label for="top-n">Top</label>'
@@ -1014,8 +1144,8 @@
     return html;
   }
 
-  function harvestLegend(craftCost, craftThresh, lfPrice) {
-    const lfStr = lfPrice > 0 ? `30 LF (${fmtC(craftCost)})` : `30 LF`;
+  function harvestLegend(craftCost, craftThresh, lfPrice, lfCount = 30) {
+    const lfStr = lfPrice > 0 ? `${lfCount} LF (${fmtC(craftCost)})` : `${lfCount} LF`;
     return `<div class="harvest-legend">`
       + `<strong>How it works:</strong> spend ${escHtml(lfStr)} to swap an item for a random one from the pool (pool EV: shown in header).`
       + ` <span style="color:#3fb950">&#x25B2; keep</span> if price &gt; ${fmtC(craftThresh)} &nbsp;`
@@ -1025,7 +1155,7 @@
 
   function renderHarvestSection(results, label) {
     if (!results) return `<div class="empty">No ${label} data found for this league.</div>`;
-    const { items, poolEv, craftCost, craftThresh, netEv, lfPrice, lfName, poolSize } = results;
+    const { items, poolEv, craftCost, craftThresh, netEv, lfPrice, lfName, poolSize, lfCount } = results;
     const profitable = netEv > 0;
     const evColor = profitable ? '#3fb950' : '#f85149';
     return `
@@ -1037,7 +1167,7 @@
           <span class="pool-ev">EV: <strong>${fmtC(poolEv)}</strong> · Net: <strong style="color:${evColor}">${fmtC(netEv)}</strong></span>
         </div>
         <div class="col">
-          ${harvestLegend(craftCost, craftThresh, lfPrice)}
+          ${harvestLegend(craftCost, craftThresh, lfPrice, lfCount)}
           <div class="harvest-summary">
             <div><strong>${poolSize} items</strong> in pool · ${escHtml(lfName)}: <strong>${fmtC(lfPrice)}</strong>/unit</div>
             ${results.isExchange === false ? '<div style="color:#e6b450">⚠ Showing stash prices (exchange API unavailable)</div>' : ''}
@@ -1061,7 +1191,7 @@
             <span class="pool-ev">EV: <strong>${fmtC(poolEv)}</strong> · Net: <strong style="color:${evColor}">${fmtC(netEv)}</strong></span>
           </div>
           <div class="col">
-            ${harvestLegend(craftCost, craftThresh, lfPrice)}
+            ${harvestLegend(craftCost, craftThresh, lfPrice, 30)}
             <div class="harvest-summary">
               <div><strong>${poolSize} essences</strong> in pool · Primal LF: <strong>${fmtC(lfPrice)}</strong>/unit</div>
             </div>
@@ -1212,7 +1342,11 @@
       setActiveTab(tab);
       status.className = 'load';
       status.textContent = `Fetching ${league} data…`;
-      if (bust) bustCache(league, tab === 'gems' ? 'SkillGem' : (HARVEST_TABS[tab]?.type || tab));
+      if (bust) {
+        if (tab === 'gems') bustCache(league, 'SkillGem');
+        else if (tab === 'fjewels') { bustCache(league, 'stash-ForbiddenJewel'); bustCache(league, 'UniqueJewel'); }
+        else bustCache(league, HARVEST_TABS[tab]?.type || tab);
+      }
 
       try {
         if (tab === 'gems') {
@@ -1225,6 +1359,27 @@
           const gcpPrice  = gcpLine ? (gcpLine.chaosEquivalent || gcpLine.chaosValue || 0) : 0;
           const gcpIcon   = gcpDetail ? gcpDetail.icon : '';
           render(shadow, processGems(data, topN, gemLQ), topN, { price: gcpPrice, icon: gcpIcon });
+        } else if (tab === 'fjewels') {
+          const [stashData, itemData] = await Promise.allSettled([
+            fetchStash(league, 'ForbiddenJewel'),
+            fetchItems(league, 'UniqueJewel'),
+          ]);
+          const stash = stashData.status === 'fulfilled' ? stashData.value : null;
+          const item  = itemData.status  === 'fulfilled' ? itemData.value  : null;
+          // Log raw data to debug field names
+          if (stash) {
+            const sl = stash.lines || [];
+            console.log('[GemCheck] stash lines total:', sl.length, '| sample fields:', sl[0] ? Object.keys(sl[0]) : []);
+            const sorted = [...sl].sort((a, b) => (b.divineValue || 0) - (a.divineValue || 0));
+            if (sorted.length) console.log('[GemCheck] stash most expensive:', sorted[0]);
+            if (sorted.length) console.log('[GemCheck] stash cheapest:', sorted[sorted.length - 1]);
+          }
+          if (item) {
+            const il = (item.lines || []).filter(l => l.name && l.name.includes('Forbidden'));
+            console.log('[GemCheck] UniqueJewel Forbidden entries:', il.length, il.slice(0, 3));
+          }
+          const data = stash || item || { lines: [] };
+          renderFJewels(shadow, processFJewels(data));
         } else if (tab === 'essences') {
           const cfg = HARVEST_TABS.essences;
           const [data, lfData, itemData] = await Promise.all([

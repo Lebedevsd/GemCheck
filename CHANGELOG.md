@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.3] – 2026-03-19
+
+### Added
+- **Astrolabes tab** — Harvest swap EV for Astrolabes (400 Primal Lifeforce per swap)
+- **Forbidden Jewels tab** — average price of Forbidden Flame and Forbidden Flesh variants in divines; shows two rows: all variants and excluding 7 hidden ascendancy passives; columns: avg · σ · min · max
+
 ## [1.1.2] – 2026-03-13
 
 ### Fixed

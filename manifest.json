@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "GemCheck – PoE Transfigured Gem Calculator",
   "description": "Transfigured gem EV for the Labyrinth Divine Font + Harvest swap EV for Catalysts, Essences, and Delirium Orbs. poe.ninja pricing.",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "icons": {
     "16": "assets/icon16.png",
     "48": "assets/icon48.png",
@@ -25,7 +25,9 @@
         "https://poe.ninja/*/economy/*/skill-gems*",
         "https://poe.ninja/*/economy/*/currency*",
         "https://poe.ninja/*/economy/*/essences*",
-        "https://poe.ninja/*/economy/*/delirium-orbs*"
+        "https://poe.ninja/*/economy/*/delirium-orbs*",
+        "https://poe.ninja/*/economy/*/astrolabes*",
+        "https://poe.ninja/*/economy/*/forbidden-jewels*"
       ],
       "js": ["src/content.js"],
       "run_at": "document_start"
