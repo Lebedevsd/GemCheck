@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.2.0] – 2026-05-01
+
+### Added
+- **Bosses tab** — EV calculations for 9 endgame bosses (Shaper, Elder, Maven, Sirus, Exarch, Eater, The Feared trio); normal and uber versions with entry cost, unique drop pool EV, and additional drops (Watcher's Eye, Orb of Conflict, etc.)
+- **Harvest EV-negative indicator** — when swap is unprofitable (craftThresh < 0), a yellow banner explains why and all items show red ▼ instead of misleading green ▲
+
+### Changed
+- **Code split into 3 files** — `src/data.js` (static tables), `src/loader.js` (API + processing), `src/content.js` (UI); no behaviour change
+- **poe.ninja API migration** — old `/api/data/itemoverview` and `/api/data/currencyoverview` endpoints retired by poe.ninja; all item data now fetched from `/poe1/api/economy/stash/current/item/overview`, currency pricing from the exchange API; requires being logged in to poe.ninja
+- **Exchange icon URLs** — now correctly uses `web.poecdn.com` base for item images (fixes broken icons on Catalysts, Astrolabes, Delirium Orbs tabs)
+
+### Fixed
+- Fragment/currency prices for boss drops now sourced from exchange API
+- GCP price in gems tab updated to use new exchange API
+- `normalizeExchangeData` now correctly enriches icons even when the exchange API already includes item names in the lines array
+
 ## [1.1.3] – 2026-03-19
 
 ### Added
