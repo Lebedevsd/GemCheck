@@ -1,8 +1,13 @@
-.PHONY: pack pack-firefox fetch update release screenshot clean version
+.PHONY: pack pack-firefox deploy fetch update release screenshot clean version
 
 # Build distributable zip (Chrome)
 pack:
 	python3 scripts/pack.py
+
+# Pack and copy to Windows Downloads for quick local testing
+deploy: pack
+	cp gemcheck.zip /mnt/c/Users/lebed/Downloads/
+	@echo "Copied to Downloads"
 
 # Build distributable zip (Firefox)
 pack-firefox:

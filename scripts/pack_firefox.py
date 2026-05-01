@@ -15,6 +15,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 FILES = [
     'src/background.js',
+    'src/interceptor.js',
+    'src/data.js',
+    'src/loader.js',
     'src/content.js',
     'assets/icon16.png',
     'assets/icon48.png',
