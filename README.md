@@ -1,5 +1,6 @@
 # GemCheck – PoE Transfigured Gem Calculator
 
+[![API Health](https://github.com/Lebedevsd/GemCheck/actions/workflows/api-health.yml/badge.svg)](https://github.com/Lebedevsd/GemCheck/actions/workflows/api-health.yml)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-donate-yellow?logo=buy-me-a-coffee)](https://buymeacoffee.com/lebedevsd)
 
 A browser extension that overlays a floating panel on [poe.ninja](https://poe.ninja) and helps you make profitable decisions at several endgame crafting mechanics in Path of Exile:
