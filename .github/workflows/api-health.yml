@@ -1,0 +1,52 @@
+name: API Health Check
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # 08:00 UTC daily
+  workflow_dispatch:        # allow manual trigger
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: Check poe.ninja endpoints
+        id: check
+        run: python3 scripts/check_api.py
+        env:
+          LEAGUE: Mirage
+
+      - name: Notify Telegram on failure
+        if: failure()
+        run: |
+          python3 - <<'EOF'
+          import os, urllib.request, urllib.parse, json
+
+          token   = os.environ['TELEGRAM_BOT_TOKEN']
+          chat_id = os.environ['TELEGRAM_CHAT_ID']
+          details = os.environ.get('HEALTH_DETAILS', 'No details available.')
+
+          text = (
+            "🚨 *GemCheck API health check failed*\n\n"
+            + details.replace('_', r'\_').replace('*', r'\*').replace('`', r'\`')
+          )
+
+          payload = json.dumps({
+            'chat_id':    chat_id,
+            'text':       text,
+            'parse_mode': 'MarkdownV2',
+          }).encode()
+
+          req = urllib.request.Request(
+            f'https://api.telegram.org/bot{token}/sendMessage',
+            data=payload,
+            headers={'Content-Type': 'application/json'},
+          )
+          urllib.request.urlopen(req)
+          EOF
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+          HEALTH_DETAILS:     ${{ steps.check.outputs.details }}
