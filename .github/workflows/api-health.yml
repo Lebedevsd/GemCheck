@@ -28,15 +28,11 @@ jobs:
           chat_id = os.environ['TELEGRAM_CHAT_ID']
           details = os.environ.get('HEALTH_DETAILS', 'No details available.')
 
-          text = (
-            "🚨 *GemCheck API health check failed*\n\n"
-            + details.replace('_', r'\_').replace('*', r'\*').replace('`', r'\`')
-          )
+          text = "🚨 GemCheck API health check failed\n\n" + details
 
           payload = json.dumps({
-            'chat_id':    chat_id,
-            'text':       text,
-            'parse_mode': 'MarkdownV2',
+            'chat_id': chat_id,
+            'text':    text,
           }).encode()
 
           req = urllib.request.Request(
