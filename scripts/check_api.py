@@ -11,6 +11,7 @@ STASH    = 'https://poe.ninja/poe1/api/economy/stash/current/item/overview'
 EXCHANGE = 'https://poe.ninja/poe1/api/economy/exchange/current/overview'
 
 ENDPOINTS = [
+    # Stash API — item types
     (STASH,    {'league': LEAGUE, 'type': 'SkillGem'}),
     (STASH,    {'league': LEAGUE, 'type': 'UniqueWeapon'}),
     (STASH,    {'league': LEAGUE, 'type': 'UniqueArmour'}),
@@ -20,11 +21,12 @@ ENDPOINTS = [
     (STASH,    {'league': LEAGUE, 'type': 'UniqueMap'}),
     (STASH,    {'league': LEAGUE, 'type': 'Invitation'}),
     (STASH,    {'league': LEAGUE, 'type': 'Fossil'}),
-    (STASH,    {'league': LEAGUE, 'type': 'Astrolabe'}),
+    # Exchange API — bulk-trade types
     (EXCHANGE, {'league': LEAGUE, 'type': 'Currency'}),
     (EXCHANGE, {'league': LEAGUE, 'type': 'Fragment'}),
     (EXCHANGE, {'league': LEAGUE, 'type': 'Essence'}),
     (EXCHANGE, {'league': LEAGUE, 'type': 'DeliriumOrb'}),
+    (EXCHANGE, {'league': LEAGUE, 'type': 'Astrolabe'}),
 ]
 
 failures = []
@@ -52,7 +54,7 @@ gha_output = os.environ.get('GITHUB_OUTPUT', '')
 if gha_output:
     details = '\n'.join(failures) if failures else 'All endpoints OK.'
     with open(gha_output, 'a') as f:
-        f.write(f'details={details}\n')
+        f.write(f'details<<GHADELIM\n{details}\nGHADELIM\n')
 
 if failures:
     print(f'\n{len(failures)} endpoint(s) failed.')

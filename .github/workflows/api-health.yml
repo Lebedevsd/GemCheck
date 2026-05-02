@@ -40,7 +40,11 @@ jobs:
             data=payload,
             headers={'Content-Type': 'application/json'},
           )
-          urllib.request.urlopen(req)
+          try:
+            urllib.request.urlopen(req)
+          except urllib.error.HTTPError as e:
+            print(f'Telegram {e.code}: {e.read().decode()}')
+            raise
           EOF
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
