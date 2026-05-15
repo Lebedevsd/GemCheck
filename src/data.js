@@ -160,7 +160,7 @@ var TRANSFIG_GEMS = {
 
 // ─── Harvest crafting config ──────────────────────────────────────────────
 var HARVEST_TABS = {
-  fossils:   { label: 'Fossils',   type: 'Fossil',      lifeforce: 'Wild Crystallised Lifeforce',   cost: 30 },
+  fossils:   { label: 'Fossils',   type: 'Fossil',      lifeforce: 'Wild Crystallised Lifeforce',   cost: 30, useExchange: true },
   // oils: hidden for now
   catalysts: { label: 'Catalysts', type: 'Currency',    lifeforce: 'Vivid Crystallised Lifeforce',  cost: 30, useExchange: true,
                nameFilter: n => n.includes('Catalyst'),

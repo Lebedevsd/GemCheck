@@ -20,12 +20,12 @@ ENDPOINTS = [
     (STASH,    {'league': LEAGUE, 'type': 'UniqueFlask'}),
     (STASH,    {'league': LEAGUE, 'type': 'UniqueMap'}),
     (STASH,    {'league': LEAGUE, 'type': 'Invitation'}),
-    (STASH,    {'league': LEAGUE, 'type': 'Fossil'}),
     # Exchange API — bulk-trade types
     (EXCHANGE, {'league': LEAGUE, 'type': 'Currency'}),
     (EXCHANGE, {'league': LEAGUE, 'type': 'Fragment'}),
     (EXCHANGE, {'league': LEAGUE, 'type': 'Essence'}),
     (EXCHANGE, {'league': LEAGUE, 'type': 'DeliriumOrb'}),
+    (EXCHANGE, {'league': LEAGUE, 'type': 'Fossil'}),
     (EXCHANGE, {'league': LEAGUE, 'type': 'Astrolabe'}),
 ]
 
